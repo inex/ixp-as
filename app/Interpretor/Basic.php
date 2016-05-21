@@ -4,6 +4,7 @@ namespace App\Interpretor;
 
 use Entities\Measurement;
 use Entities\Result;
+use Entities\Network;
 
 class Basic
 {
@@ -26,26 +27,12 @@ class Basic
     /**
      * Basic Interpretor
      */
-    public function interpret() {
+    public function interpret(): Result {
         $m = $this->measurement;
 
         // what is the source network's peering addresses?
-        $srcAddrs = [];
-        foreach( $m->getRequest()->getNetwork()->getAddresses() as $a ) {
-            if( $a->getProtocol() != $m->getRequest()->getProtocol() ) {
-                continue;
-            }
-            $srcAddrs[] = $a->getAddress();
-        }
-
-        // what is the destination network's peering addresses?
-        $dstAddrs = [];
-        foreach( $m->getDestinationNetwork()->getAddresses() as $a ) {
-            if( $a->getProtocol() != $m->getRequest()->getProtocol() ) {
-                continue;
-            }
-            $dstAddrs[] = $a->getAddress();
-        }
+        $srcAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getNetwork(), $m->getRequest()->getProtocol() );
+        $dstAddrs = $this->getAddressesFromNetwork( $m->getDestinationNetwork(),    $m->getRequest()->getProtocol() );
 
         $atlasOut = json_decode($m->getAtlasOutData());
         $atlasIn  = json_decode($m->getAtlasInData() );
@@ -74,7 +61,7 @@ class Basic
         return $r;
     }
 
-    private function parsePath( $tracert ) {
+    private function parsePath( array $tracert ): array {
         $path = [];
 
         foreach( $tracert[0]->result as $e ) {
@@ -92,7 +79,7 @@ class Basic
         return $path;
     }
 
-    private function queryPassesThrough( $path, $addrs ) {
+    private function queryPassesThrough( array $path, array $addrs ): bool {
 
         foreach( $path as $ip ) {
             if( in_array( $ip, $addrs ) ) {
@@ -101,6 +88,18 @@ class Basic
         }
 
         return false;
+    }
+
+
+    private function getAddressesFromNetwork( Network $n, int $requestProtocol ): array {
+        $addrs = [];
+        foreach( $n->getAddresses() as $a ) {
+            if( $a->getProtocol() != $requestProtocol ) {
+                continue;
+            }
+            $addrs[] = $a->getAddress();
+        }
+        return $addrs;
     }
 
 }
