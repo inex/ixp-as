@@ -214,4 +214,3 @@ public function getIXP()
 return $this->IXP;
 }
 }
-

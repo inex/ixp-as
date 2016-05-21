@@ -139,4 +139,3 @@ public function getLAN()
 return $this->LAN;
 }
 }
-

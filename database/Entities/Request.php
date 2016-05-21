@@ -197,4 +197,3 @@ public function getNetwork()
 return $this->network;
 }
 }
-
