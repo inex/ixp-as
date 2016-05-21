@@ -1,0 +1,268 @@
+<?php
+
+namespace Entities;
+
+/**
+ * Network
+ */
+class Network
+{
+/**
+ * @var string
+ */
+private $name;
+
+/**
+ * @var integer
+ */
+private $v4asn;
+
+/**
+ * @var integer
+ */
+private $v6asn;
+
+/**
+ * @var integer
+ */
+private $id;
+
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $addresses;
+
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $probes;
+
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $requests;
+
+/**
+ * @var \Entities\IXP
+ */
+private $IXP;
+
+/**
+ * Constructor
+ */
+public function __construct()
+{
+$this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
+$this->probes = new \Doctrine\Common\Collections\ArrayCollection();
+$this->requests = new \Doctrine\Common\Collections\ArrayCollection();
+}
+
+/**
+ * Set name
+ *
+ * @param string $name
+ *
+ * @return Network
+ */
+public function setName($name)
+{
+$this->name = $name;
+
+return $this;
+}
+
+/**
+ * Get name
+ *
+ * @return string
+ */
+public function getName()
+{
+return $this->name;
+}
+
+/**
+ * Set v4asn
+ *
+ * @param integer $v4asn
+ *
+ * @return Network
+ */
+public function setV4asn($v4asn)
+{
+$this->v4asn = $v4asn;
+
+return $this;
+}
+
+/**
+ * Get v4asn
+ *
+ * @return integer
+ */
+public function getV4asn()
+{
+return $this->v4asn;
+}
+
+/**
+ * Set v6asn
+ *
+ * @param integer $v6asn
+ *
+ * @return Network
+ */
+public function setV6asn($v6asn)
+{
+$this->v6asn = $v6asn;
+
+return $this;
+}
+
+/**
+ * Get v6asn
+ *
+ * @return integer
+ */
+public function getV6asn()
+{
+return $this->v6asn;
+}
+
+/**
+ * Get id
+ *
+ * @return integer
+ */
+public function getId()
+{
+return $this->id;
+}
+
+/**
+ * Add address
+ *
+ * @param \Entities\Address $address
+ *
+ * @return Network
+ */
+public function addAddress(\Entities\Address $address)
+{
+$this->addresses[] = $address;
+
+return $this;
+}
+
+/**
+ * Remove address
+ *
+ * @param \Entities\Address $address
+ */
+public function removeAddress(\Entities\Address $address)
+{
+$this->addresses->removeElement($address);
+}
+
+/**
+ * Get addresses
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getAddresses()
+{
+return $this->addresses;
+}
+
+/**
+ * Add probe
+ *
+ * @param \Entities\Probe $probe
+ *
+ * @return Network
+ */
+public function addProbe(\Entities\Probe $probe)
+{
+$this->probes[] = $probe;
+
+return $this;
+}
+
+/**
+ * Remove probe
+ *
+ * @param \Entities\Probe $probe
+ */
+public function removeProbe(\Entities\Probe $probe)
+{
+$this->probes->removeElement($probe);
+}
+
+/**
+ * Get probes
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getProbes()
+{
+return $this->probes;
+}
+
+/**
+ * Add request
+ *
+ * @param \Entities\Request $request
+ *
+ * @return Network
+ */
+public function addRequest(\Entities\Request $request)
+{
+$this->requests[] = $request;
+
+return $this;
+}
+
+/**
+ * Remove request
+ *
+ * @param \Entities\Request $request
+ */
+public function removeRequest(\Entities\Request $request)
+{
+$this->requests->removeElement($request);
+}
+
+/**
+ * Get requests
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getRequests()
+{
+return $this->requests;
+}
+
+/**
+ * Set iXP
+ *
+ * @param \Entities\IXP $iXP
+ *
+ * @return Network
+ */
+public function setIXP(\Entities\IXP $iXP = null)
+{
+$this->IXP = $iXP;
+
+return $this;
+}
+
+/**
+ * Get iXP
+ *
+ * @return \Entities\IXP
+ */
+public function getIXP()
+{
+return $this->IXP;
+}
+}
+

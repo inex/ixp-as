@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\LAN">
+    <id name="id" type="integer">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="name" type="string" length="255" nullable="false"/>
+    <field name="protocol" type="integer" nullable="false"/>
+    <field name="subnet" type="string" length="64" nullable="false"/>
+    <field name="masklen" type="integer" nullable="true"/>
+    <many-to-one field="IXP" target-entity="Entities\IXP" inversed-by="LANs">
+      <join-columns>
+        <join-column name="ixp_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many field="addresses" target-entity="Entities\Address" mapped-by="LAN"/>
+  </entity>
+</doctrine-mapping>

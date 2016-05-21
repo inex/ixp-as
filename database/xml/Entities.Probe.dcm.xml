@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\Probe">
+    <id name="id" type="integer">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="atlas_id" type="integer" nullable="false"/>
+    <field name="v4_enabled" type="boolean" nullable="true"/>
+    <field name="v6_enabled" type="boolean" nullable="true"/>
+    <many-to-one field="network" target-entity="Entities\Network" inversed-by="probes">
+      <join-columns>
+        <join-column name="network_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

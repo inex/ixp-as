@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\Network">
+    <id name="id" type="integer">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="name" type="string" length="255" nullable="true"/>
+    <field name="v4asn" type="integer" nullable="true"/>
+    <field name="v6asn" type="integer" nullable="true"/>
+    <many-to-one field="IXP" target-entity="Entities\IXP" inversed-by="networks">
+      <join-columns>
+        <join-column name="ixp_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many field="addresses" target-entity="Entities\Address" mapped-by="network"/>
+    <one-to-many field="probes" target-entity="Entities\Probe" mapped-by="network"/>
+    <one-to-many field="requests" target-entity="Entities\Request" mapped-by="network"/>
+  </entity>
+</doctrine-mapping>

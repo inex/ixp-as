@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<skipper version="3.2.6.1309" mvc="Without MVC" orm="Doctrine2" name="IXP_AS" uuid="c2d767ef-5481-440c-ab2a-8315de8c3566">
+  <module name="\MainBundle" local-name="MainBundle" namespace="\Entities" local-namespace="Entities" export-format="Doctrine2Xml" export-path="xml" uuid="a46b9548-6cd4-4b50-a043-7112001a35df">
+    <entity name="\Entities\IXP" local-name="IXP" namespace="\Entities" uuid="0fcd5869-c98e-44a3-b8db-2536b2b72503">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="f444952a-f769-4e9b-a444-fbce0e087efc"/>
+      <field name="name" type="string" size="255" uuid="fc44e317-c944-4e6d-8245-35376a5a7d76"/>
+      <field name="shortname" type="string" size="255" uuid="91a3f8dc-6cec-4f26-b3fb-03db028ebab9"/>
+      <field name="country" type="string" size="2" required="true" uuid="2b692f1d-3aae-435b-8bf2-bedf1a5865bd"/>
+    </entity>
+    <entity name="\Entities\LAN" local-name="LAN" namespace="\Entities" uuid="0515b655-ca9d-45dd-992e-4e1df6bdfad1">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="ba8949ec-8342-4b9c-a570-42f5d828396f"/>
+      <field name="name" type="string" size="255" required="true" uuid="8498a4c7-0b2e-4aaf-a2e3-c40cd939e0ce"/>
+      <field name="protocol" type="integer" required="true" uuid="6638de38-b3bb-4899-bd34-e9de0fd7fa61"/>
+      <field name="subnet" type="string" size="64" required="true" uuid="a650b116-7f02-4b25-a795-aa88b19b1781"/>
+      <field name="masklen" type="integer" uuid="7599b071-e8ba-4586-b0a5-dd66ea7eed83"/>
+      <field name="ixp_id" type="integer" uuid="eddfe47c-1fa7-414d-bd12-4a33e27f17a3"/>
+    </entity>
+    <association from="\Entities\LAN" to="\Entities\IXP" owner-alias="LANs" inverse-alias="IXP" many-owner="true" many-inverse="false" uuid="13a814ae-830b-4eca-94cc-891c924b985a">
+      <association-field from="ixp_id" to="id"/>
+    </association>
+    <entity name="\Entities\Network" local-name="Network" namespace="\Entities" uuid="92188065-4ee9-4618-ad6f-39ec99266b3f">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="7e177d9f-2883-4483-ba5a-d9a56676d4e5"/>
+      <field name="name" type="string" size="255" uuid="2160e504-92eb-46a2-99d8-1d12e69c9fc5"/>
+      <field name="v4asn" type="integer" uuid="2a194386-7d34-4a47-bdce-f24d59b2016f"/>
+      <field name="v6asn" type="integer" uuid="204b3e06-bdc5-494a-b36c-1ba390093678"/>
+      <field name="ixp_id" type="integer" uuid="7d495bc9-bf8e-4559-9c3a-5417fe175479"/>
+    </entity>
+    <association from="\Entities\Network" to="\Entities\IXP" owner-alias="networks" inverse-alias="IXP" many-owner="true" many-inverse="false" uuid="fb03c59a-1343-404a-8241-582841222468">
+      <association-field from="ixp_id" to="id"/>
+    </association>
+    <entity name="\Entities\Address" local-name="Address" namespace="\Entities" uuid="f9f0d822-b579-4a28-af72-802e4c0a2082">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="df693f83-1b34-49ab-91eb-d4805312e47f"/>
+      <field name="protocol" type="integer" required="true" uuid="9b8192aa-c237-4fb5-bc9e-ceb54aa2c195"/>
+      <field name="address" type="string" size="64" required="true" uuid="0bd1a809-9c64-4673-b534-6815c3ba6d54"/>
+      <field name="network_id" type="integer" uuid="ad5feeb3-b726-4780-b27d-7e88b831d487"/>
+      <field name="lan_id" type="integer" uuid="bd2d18ef-8a05-49ac-b8cc-f56bbcd2c191"/>
+    </entity>
+    <association from="\Entities\Address" to="\Entities\Network" owner-alias="addresses" inverse-alias="network" many-owner="true" many-inverse="false" uuid="7159a6a0-b450-4059-997f-579efdd36aab">
+      <association-field from="network_id" to="id"/>
+    </association>
+    <association from="\Entities\Address" to="\Entities\LAN" owner-alias="addresses" inverse-alias="LAN" many-owner="true" many-inverse="false" uuid="0c26e8db-2f68-4bba-8c35-3ddfea0f4e8a">
+      <association-field from="lan_id" to="id"/>
+    </association>
+    <entity name="\Entities\Probe" local-name="Probe" namespace="\Entities" uuid="25b0f132-c5fc-4980-bc90-988f7d80a803">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="e4877d96-0481-4952-9c6d-731fd176db82"/>
+      <field name="atlas_id" type="integer" required="true" uuid="39ea7809-ae74-4c10-989d-2a0715f03618"/>
+      <field name="v4_enabled" type="boolean" uuid="afbd6a0d-7de3-4ada-b34c-eee3c7f402d2"/>
+      <field name="v6_enabled" type="boolean" uuid="6ef105ce-5431-4cc7-ada7-94cfcbf489c5"/>
+      <field name="network_id" type="integer" uuid="ffc0d864-ab3a-46bf-bfa2-32ba85b84662"/>
+    </entity>
+    <association from="\Entities\Probe" to="\Entities\Network" owner-alias="probes" inverse-alias="network" many-owner="true" many-inverse="false" uuid="cbc8fc77-218d-45dc-87f4-e9e57238877f">
+      <association-field from="network_id" to="id"/>
+    </association>
+    <entity name="\Entities\Request" local-name="Request" namespace="\Entities" uuid="bd749464-5df2-48ad-8542-765979c93733">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="c8e7c012-06a0-46f4-b210-1789b0a7cdeb"/>
+      <field name="nonce" type="string" size="64" unique="true" uuid="0842e888-5381-4594-8933-8dbb903e85b3"/>
+      <field name="protocol" type="integer" required="true" uuid="f13d297a-2cc3-445f-83e5-bce8c6dbe4eb"/>
+      <field name="created" type="datetime" required="true" uuid="5a489cd8-bfab-4df8-914d-cbe957ceaca9"/>
+      <field name="started" type="datetime" uuid="a8842766-0909-4b54-8602-aab68b504702"/>
+      <field name="completed" type="datetime" uuid="a4408767-b555-4db5-be33-bc9589cd7de6"/>
+      <field name="network_id" type="integer" uuid="bc202cb2-3326-4b27-941b-834a581173a2"/>
+    </entity>
+    <association from="\Entities\Request" to="\Entities\Network" owner-alias="requests" inverse-alias="network" many-owner="true" many-inverse="false" uuid="4f8b3c70-bb6b-4e26-a6f5-1323a8a5678f">
+      <association-field from="network_id" to="id"/>
+    </association>
+  </module>
+  <visual-data>
+    <association uuid="0c26e8db-2f68-4bba-8c35-3ddfea0f4e8a" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="13a814ae-830b-4eca-94cc-891c924b985a" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="4f8b3c70-bb6b-4e26-a6f5-1323a8a5678f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="7159a6a0-b450-4059-997f-579efdd36aab" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="cbc8fc77-218d-45dc-87f4-e9e57238877f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="fb03c59a-1343-404a-8241-582841222468" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <entity uuid="0515b655-ca9d-45dd-992e-4e1df6bdfad1" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="341" position-y="8" size-x="0" size-x2="98" size-y="0" size-y2="101"/>
+    <entity uuid="0fcd5869-c98e-44a3-b8db-2536b2b72503" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="10" position-y="20"/>
+    <entity uuid="25b0f132-c5fc-4980-bc90-988f7d80a803" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="14" position-y="408" size-x="0" size-x2="111" size-y="0" size-y2="87"/>
+    <entity uuid="92188065-4ee9-4618-ad6f-39ec99266b3f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="20" position-y="231" size-x="0" size-x2="98" size-y="0" size-y2="87"/>
+    <entity uuid="bd749464-5df2-48ad-8542-765979c93733" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="212" position-y="388" size-x="0" size-x2="108" size-y="0" size-y2="115"/>
+    <entity uuid="f9f0d822-b579-4a28-af72-802e4c0a2082" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="339" position-y="175" size-x="0" size-x2="103" size-y="0" size-y2="87"/>
+    <module uuid="a46b9548-6cd4-4b50-a043-7112001a35df" bg-color="#FDEBEF" position-x="61" position-y="72" size-x="47" size-x2="484" size-y="59" size-y2="583"/>
+    <project uuid="c2d767ef-5481-440c-ab2a-8315de8c3566" size-x="0" size-x2="1300" size-y="0" size-y2="933"/>
+  </visual-data>
+</skipper>
