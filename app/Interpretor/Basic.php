@@ -61,6 +61,14 @@ class Basic
         return $r;
     }
 
+    /**
+     * Take a RIPE Atles traceroute result and extract the path
+     *
+     * NB: FIXME?: Assumes no ECMP... takes only one IP per hop.
+     *
+     * @param array $tracert Raw RIPE Atles JSON result as PHP
+     * @return path The path
+     */
     private function parsePath( array $tracert ): array {
         $path = [];
 
@@ -79,6 +87,13 @@ class Basic
         return $path;
     }
 
+    /**
+     * For a given path of IP addresses, see if another list of addresses appears in the path
+     *
+     * @param array $path Path of IP addresses
+     * @param array $addrs List of addresses to find in $path
+     * @return bool
+     */
     private function queryPassesThrough( array $path, array $addrs ): bool {
 
         foreach( $path as $ip ) {
@@ -90,11 +105,17 @@ class Basic
         return false;
     }
 
-
-    private function getAddressesFromNetwork( Network $n, int $requestProtocol ): array {
+    /**
+     * For a given network (ORM) and protocol, find their IXP assigned IP addresses
+     *
+     * @param Entities\Network $n The IXP customer object
+     * @param int $p The protocol
+     * @return array Array of addresses
+     */
+    private function getAddressesFromNetwork( Network $n, int $p ): array {
         $addrs = [];
         foreach( $n->getAddresses() as $a ) {
-            if( $a->getProtocol() != $requestProtocol ) {
+            if( $a->getProtocol() != $p ) {
                 continue;
             }
             $addrs[] = $a->getAddress();
