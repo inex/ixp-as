@@ -15,5 +15,6 @@
     <one-to-many field="addresses" target-entity="Entities\Address" mapped-by="network"/>
     <one-to-many field="probes" target-entity="Entities\Probe" mapped-by="network"/>
     <one-to-many field="requests" target-entity="Entities\Request" mapped-by="network"/>
+    <one-to-many field="measurements" target-entity="Entities\Measurement" mapped-by="destinationNetwork"/>
   </entity>
 </doctrine-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\Result" table="results">
+    <id name="id" type="integer">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="routing" type="string" nullable="true"/>
+    <field name="path_out" type="text" nullable="true"/>
+    <field name="path_in" type="text" nullable="true"/>
+    <one-to-one field="measurement" target-entity="Entities\Measurement" inversed-by="result">
+      <join-columns>
+        <join-column name="measurement_id" referenced-column-name="id" unique="true"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

@@ -14,5 +14,6 @@
         <join-column name="network_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
+    <one-to-many field="measurements" target-entity="Entities\Measurement" mapped-by="request"/>
   </entity>
 </doctrine-mapping>

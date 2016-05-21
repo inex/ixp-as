@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\Measurement" table="measurements">
+    <id name="id" type="integer">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="atlas_out_id" type="integer" nullable="true"/>
+    <field name="atlas_in_id" type="integer" nullable="true"/>
+    <field name="atlas_out_start" type="datetime" nullable="true"/>
+    <field name="atlas_out_stop" type="datetime" nullable="true"/>
+    <field name="atlas_in_start" type="datetime" nullable="true"/>
+    <field name="atlas_in_stop" type="datetime" nullable="true"/>
+    <field name="atlas_out_data" type="text" nullable="true"/>
+    <field name="atlas_in_data" type="text" nullable="true"/>
+    <many-to-one field="request" target-entity="Entities\Request" inversed-by="measurements">
+      <join-columns>
+        <join-column name="request_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="destinationNetwork" target-entity="Entities\Network" inversed-by="measurements">
+      <join-columns>
+        <join-column name="network_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-one field="result" target-entity="Entities\Result" mapped-by="measurement"/>
+  </entity>
+</doctrine-mapping>

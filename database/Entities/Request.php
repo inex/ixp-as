@@ -196,4 +196,50 @@ public function getNetwork()
 {
 return $this->network;
 }
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $measurements;
+
+/**
+ * Constructor
+ */
+public function __construct()
+{
+$this->measurements = new \Doctrine\Common\Collections\ArrayCollection();
+}
+
+/**
+ * Add measurement
+ *
+ * @param \Entities\Measurement $measurement
+ *
+ * @return Request
+ */
+public function addMeasurement(\Entities\Measurement $measurement)
+{
+$this->measurements[] = $measurement;
+
+return $this;
+}
+
+/**
+ * Remove measurement
+ *
+ * @param \Entities\Measurement $measurement
+ */
+public function removeMeasurement(\Entities\Measurement $measurement)
+{
+$this->measurements->removeElement($measurement);
+}
+
+/**
+ * Get measurements
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getMeasurements()
+{
+return $this->measurements;
+}
 }

@@ -81,17 +81,57 @@
     <association from="\Entities\Request" to="\Entities\Network" owner-alias="requests" inverse-alias="network" many-owner="true" many-inverse="false" uuid="4f8b3c70-bb6b-4e26-a6f5-1323a8a5678f">
       <association-field from="network_id" to="id"/>
     </association>
+    <entity name="\Entities\Measurement" local-name="Measurement" namespace="\Entities" uuid="02fd73b6-233d-41b0-adca-a3801922133a">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="d73bf617-d3e9-4ead-86fe-8ec778f985a7"/>
+      <field name="atlas_out_id" type="integer" uuid="f7a36790-ded8-4c6f-92ff-b19563589ef1"/>
+      <field name="atlas_in_id" type="integer" uuid="00f83dcb-7285-49e7-9483-bb281c5d70ee"/>
+      <field name="atlas_out_start" type="datetime" uuid="a2f599e3-f275-4d98-9c67-59a97f3944c0"/>
+      <field name="atlas_out_stop" type="datetime" uuid="49a3197f-cb8d-484a-aa77-eb2628ce316b"/>
+      <field name="atlas_in_start" type="datetime" uuid="66bc3c19-1dff-4e5e-932e-1b8d41cdddef"/>
+      <field name="atlas_in_stop" type="datetime" uuid="a3ac7125-6d70-4d7e-808c-22a37bcbf033"/>
+      <field name="atlas_out_data" type="text" uuid="1b82d94c-521a-4b43-9139-49f2958a0489"/>
+      <field name="atlas_in_data" type="text" uuid="dbd1085d-ca47-4fe7-8176-d64464850473"/>
+      <field name="request_id" type="integer" uuid="fc267fb3-e437-4ed1-b9f5-1a1f0822cd9c"/>
+      <field name="network_id" type="integer" uuid="f4598a36-0233-49d2-a195-02fd67652f46"/>
+      <orm-attributes>
+        <attribute name="table">measurements</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\Entities\Measurement" to="\Entities\Request" owner-alias="measurements" inverse-alias="request" many-owner="true" many-inverse="false" uuid="52d732ce-c790-4000-a81d-613632f53a36">
+      <association-field from="request_id" to="id"/>
+    </association>
+    <association from="\Entities\Measurement" to="\Entities\Network" owner-alias="measurements" inverse-alias="destinationNetwork" many-owner="true" many-inverse="false" uuid="1dd6c5f8-762c-4106-8700-94e32de3b122">
+      <association-field from="network_id" to="id"/>
+    </association>
+    <entity name="\Entities\Result" local-name="Result" namespace="\Entities" uuid="80545fc6-58ee-4095-b738-ceecf0b40a1a">
+      <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="2eb0b903-9357-46ab-b555-a83275cebe5d"/>
+      <field name="routing" type="string" enum-values="ASYM,SYM" uuid="9c21dc64-4040-4929-b3d4-27ee9578981e"/>
+      <field name="path_out" type="text" uuid="732eb0f4-862e-4f4b-83d1-6ed8f7a7caf1"/>
+      <field name="path_in" type="text" uuid="c9da1bbd-8695-481b-af40-bcf113c10c8d"/>
+      <field name="measurement_id" type="integer" unique="true" uuid="de7c7fd1-863b-463d-806a-3af8158611be"/>
+      <orm-attributes>
+        <attribute name="table">results</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\Entities\Result" to="\Entities\Measurement" owner-alias="result" inverse-alias="measurement" many-owner="false" many-inverse="false" uuid="1e4211a2-11d3-410a-8035-2a3762f611c7">
+      <association-field from="measurement_id" to="id"/>
+    </association>
   </module>
   <visual-data>
     <association uuid="0c26e8db-2f68-4bba-8c35-3ddfea0f4e8a" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
     <association uuid="13a814ae-830b-4eca-94cc-891c924b985a" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="1dd6c5f8-762c-4106-8700-94e32de3b122" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="1e4211a2-11d3-410a-8035-2a3762f611c7" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
     <association uuid="4f8b3c70-bb6b-4e26-a6f5-1323a8a5678f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <association uuid="52d732ce-c790-4000-a81d-613632f53a36" center-position-x="0" center-position-y="0" color="#969696"/>
     <association uuid="7159a6a0-b450-4059-997f-579efdd36aab" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
     <association uuid="cbc8fc77-218d-45dc-87f4-e9e57238877f" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
     <association uuid="fb03c59a-1343-404a-8241-582841222468" caption1-position-x="0" caption1-position-y="0" center-position-x="0" center-position-y="0" color="#969696"/>
+    <entity uuid="02fd73b6-233d-41b0-adca-a3801922133a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="494" position-y="282" size-x="0" size-x2="126" size-y="0" size-y2="171"/>
     <entity uuid="0515b655-ca9d-45dd-992e-4e1df6bdfad1" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="341" position-y="8" size-x="0" size-x2="98" size-y="0" size-y2="101"/>
     <entity uuid="0fcd5869-c98e-44a3-b8db-2536b2b72503" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="10" position-y="20"/>
     <entity uuid="25b0f132-c5fc-4980-bc90-988f7d80a803" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="14" position-y="408" size-x="0" size-x2="111" size-y="0" size-y2="87"/>
+    <entity uuid="80545fc6-58ee-4095-b738-ceecf0b40a1a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="704" position-y="324" size-x="0" size-x2="127" size-y="0" size-y2="87"/>
     <entity uuid="92188065-4ee9-4618-ad6f-39ec99266b3f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="20" position-y="231" size-x="0" size-x2="98" size-y="0" size-y2="87"/>
     <entity uuid="bd749464-5df2-48ad-8542-765979c93733" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="212" position-y="388" size-x="0" size-x2="108" size-y="0" size-y2="115"/>
     <entity uuid="f9f0d822-b579-4a28-af72-802e4c0a2082" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="339" position-y="175" size-x="0" size-x2="103" size-y="0" size-y2="87"/>

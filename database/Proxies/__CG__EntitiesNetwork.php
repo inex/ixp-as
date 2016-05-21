@@ -64,10 +64,10 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements'];
     }
 
     /**
@@ -373,6 +373,39 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIXP', []);
 
         return parent::getIXP();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addMeasurement(\Entities\Measurement $measurement)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addMeasurement', [$measurement]);
+
+        return parent::addMeasurement($measurement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeMeasurement(\Entities\Measurement $measurement)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMeasurement', [$measurement]);
+
+        return parent::removeMeasurement($measurement);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMeasurements()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMeasurements', []);
+
+        return parent::getMeasurements();
     }
 
 }
