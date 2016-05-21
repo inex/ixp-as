@@ -24,8 +24,50 @@ class BasicInterpretorTest extends TestCase
         $this->assertTrue($result->getRouting() == 'IXP_SYM');
     }
 
+    public function testIPv4AsymmetricOut()
+    {
+        $m = $this->generateIPv4AsymmetricOut();
+
+        $interpretor = new App\Interpretor\Basic($m);
+        $result = $interpretor->interpret();
+
+        $this->assertTrue($result->getRouting() == 'IXP_ASYM_OUT');
+    }
+
+    public function testIPv4AsymmetricIn()
+    {
+        $m = $this->generateIPv4AsymmetricIn();
+
+        $interpretor = new App\Interpretor\Basic($m);
+        $result = $interpretor->interpret();
+
+        $this->assertTrue($result->getRouting() == 'IXP_ASYM_IN');
+    }
+
+    public function testIPv4NonIXP()
+    {
+        $m = $this->generateIPv4NonIXP();
+
+        $interpretor = new App\Interpretor\Basic($m);
+        $result = $interpretor->interpret();
+
+        $this->assertTrue($result->getRouting() == 'NON_IXP');
+    }
 
 
+/*
+    public function testIPv6Symmetric()
+    {
+        $m = $this->generateIPv6Symmetric();
+
+        $interpretor = new App\Interpretor\Basic($m);
+        $result = $interpretor->interpret();
+
+        $this->assertTrue($result->getRouting() == 'IXP_SYM');
+    }
+
+
+*/
 
     public function generateIPv4Symmetric() {
 
@@ -72,5 +114,88 @@ class BasicInterpretorTest extends TestCase
 
     }
 
+    public function generateIPv4AsymmetricOut() {
+
+        $m = $this->generateIPv4Symmetric();
+
+        $out = json_decode( $m->getAtlasOutData() );
+        unset( $out[0]->result[2] );
+        $m->setAtlasOutData( json_encode( $out ) );
+
+        return $m;
+    }
+
+    public function generateIPv4AsymmetricIn() {
+
+        $m = $this->generateIPv4Symmetric();
+
+        $in = json_decode( $m->getAtlasInData() );
+        unset( $in[0]->result[6] );
+        $m->setAtlasInData( json_encode( $in ) );
+
+        return $m;
+    }
+
+    public function generateIPv4NonIXP() {
+
+        $m = $this->generateIPv4Symmetric();
+
+        $in = json_decode( $m->getAtlasInData() );
+        unset( $in[0]->result[6] );
+        $m->setAtlasInData( json_encode( $in ) );
+
+        $out = json_decode( $m->getAtlasOutData() );
+        unset( $out[0]->result[2] );
+        $m->setAtlasOutData( json_encode( $out ) );
+
+        return $m;
+    }
+
+
+
+    public function generateIPv6Symmetric() {
+
+        $n = new Network();
+        $n->setName('Imagine');
+        $n->setV4ASN('25441');
+
+        $l = new LAN();
+        $l->setName('Peering LAN1');
+        $l->setProtocol(6);
+        $l->setSubnet('2001:7f8:18::');
+        $l->setMasklen(64);
+
+        $a = new Address();
+        $a->setProtocol(6);
+        $a->setAddress('2001:7f8:18::5:0:1');
+        $a->setNetwork($n);
+        $n->addAddress($a);
+        $a->setLAN($l);
+
+        $r = new Request();
+        $r->setNetwork($n);
+        $r->setProtocol(6);
+
+        $on = new Network();
+        $on->setName('Eircom');
+        $on->setV4ASN('5466');
+
+        $oa = new Address();
+        $oa->setProtocol(6);
+        $oa->setAddress('2001:7f8:18::4:0:2');
+        $oa->setNetwork($on);
+        $on->addAddress($oa);
+        $oa->setLAN($l);
+
+        $m = new Measurement;
+        $m->setRequest($r);
+        $m->setDestinationNetwork($on);
+
+        $m->setAtlasOutData( file_get_contents("https://atlas.ripe.net/api/v1/measurement/3808899/result") );
+        $m->setAtlasInData( file_get_contents("https://atlas.ripe.net/api/v1/measurement/3808900/result") );
+
+        return $m;
+
+    }
 
 }
