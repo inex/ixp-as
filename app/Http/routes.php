@@ -14,3 +14,103 @@
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
+    // if( !( $r = Registry::getRepository('Entities\Request')->findOneBy( ['nonce' => $nonce ] ) ) ) {
+    //     App::abort(404);
+    // }
+
+    // tmp
+    $r = createRequest();
+
+    // build up JSON object for the result
+    $obj = new stdClass;
+    $obj->protocol  = $r->getProtocol();
+    $obj->created   = Carbon\Carbon::parse( $r->getCreated() )->toATOMString() . 'Z';
+    $obj->started   = $r->getStarted()   ? Carbon\Carbon::parse( $r->getStarted()   )->toATOMString() . 'Z' : null;
+    $obj->completed = $r->getCompleted() ? Carbon\Carbon::parse( $r->getCompleted() )->toATOMString() . 'Z' : null;
+
+    $obj->snetwork = new stdClass;
+    $obj->snetwork->name = $r->getNetwork()->getName();
+    $obj->snetwork->asn  = $r->getNetwork()->getV4ASN();
+
+    $obj->measurements = [];
+
+    foreach( $r->getMeasurements() as $m ) {
+        $mc = new stdClass;
+        $mc->dnetwork = new stdClass;
+        $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
+        $mc->dnetwork->asn  = $m->getDestinationNetwork()->getV4ASN();
+
+        if( $m->getResult() ) {
+            $mc->result = new stdClass;
+            $mc->result->routing  = $m->getResult()->getRouting();
+            $mc->result->path_in  = $m->getResult()->getPathIn();
+            $mc->result->path_out = $m->getResult()->getPathOut();
+        } else {
+            $mc->result = null;
+        }
+
+        $obj->measurements[] = $mc;
+    }
+
+    if( strtolower( $json ) == 'json' ) {
+        return response()->json( $obj );
+    }
+
+    return view('result', [ 'request' => json_encode( $obj ) ] );
+})
+    ->where( ['nonce' => '[0-9]+'] );
+
+
+function createRequest() {
+    $n = new Entities\Network();
+    $n->setName('Cablecomm');
+    $n->setV4ASN('44384');
+
+    $l = new Entities\LAN();
+    $l->setName('Peering LAN1');
+    $l->setProtocol(4);
+    $l->setSubnet('193.242.111.0');
+    $l->setMasklen(25);
+
+    $a = new Entities\Address();
+    $a->setProtocol(4);
+    $a->setAddress('193.242.111.87');
+    $a->setNetwork($n);
+    $n->addAddress($a);
+    $a->setLAN($l);
+
+    $r = new Entities\Request();
+    $r->setNetwork($n);
+    $r->setProtocol(4);
+    $r->setCreated( '2016-05-22 10:50:02' );
+    $r->setStarted( '2016-05-22 10:50:02' );
+    // $r->setCompleted( '2016-05-22 10:50:02' );
+
+    $on = new Entities\Network();
+    $on->setName('Eircom');
+    $on->setV4ASN('5466');
+
+    $oa = new Entities\Address();
+    $oa->setProtocol(4);
+    $oa->setAddress('193.242.111.82');
+    $oa->setNetwork($on);
+    $on->addAddress($oa);
+    $oa->setLAN($l);
+
+    $m = new Entities\Measurement;
+    $m->setRequest($r);
+    $m->setDestinationNetwork($on);
+    $r->addMeasurement($m);
+    $m->setAtlasOutData( file_get_contents("https://atlas.ripe.net/api/v1/measurement/3806499/result") );
+    $m->setAtlasInData( file_get_contents("https://atlas.ripe.net/api/v1/measurement/3806501/result") );
+
+    $rs = new Entities\Result;
+    $rs->setRouting( 'IXP_SYM' );
+    $rs->setPathIn(  [ '3.2.3.4', '3.6.7.8', '3.8.7.6', '3.4.3.2' ] );
+    $rs->setPathOut( [ '4.2.3.4', '4.6.7.8', '4.8.7.6', '4.4.3.2' ] );
+    $m->setResult( $rs );
+
+    return $r;
+}
