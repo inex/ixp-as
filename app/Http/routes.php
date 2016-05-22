@@ -48,12 +48,12 @@ Route::get('/', function () {
 });
 
 Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
-    // if( !( $r = Registry::getRepository('Entities\Request')->findOneBy( ['nonce' => $nonce ] ) ) ) {
-    //     App::abort(404);
-    // }
+    if( !( $r = Registry::getRepository('Entities\Request')->findOneBy( ['nonce' => $nonce ] ) ) ) {
+        App::abort(404);
+    }
 
     // tmp
-    $r = createRequest();
+    // $r = createRequest();
 
     // build up JSON object for the result
     $obj = new stdClass;
@@ -81,8 +81,8 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
         if( $m->getResult() ) {
             $mc->result = new stdClass;
             $mc->result->routing  = $m->getResult()->getRouting();
-            $mc->result->path_in  = $m->getResult()->getPathIn();
-            $mc->result->path_out = $m->getResult()->getPathOut();
+            $mc->result->path_in  = unserialize( $m->getResult()->getPathIn() );
+            $mc->result->path_out = unserialize( $m->getResult()->getPathOut() );
         } else {
             $mc->result = null;
         }

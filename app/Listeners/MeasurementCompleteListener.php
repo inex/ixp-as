@@ -10,6 +10,8 @@ use Entities\Measurement;
 
 use EntityManager;
 
+use App\Interpretor\Basic as BasicInterpretor;
+
 class MeasurementCompleteListener
 {
     /**
@@ -34,10 +36,11 @@ class MeasurementCompleteListener
         $m = $event->measurement;
 
         // interpret the measurement
-        $interpretor = new App\Interpretor\Basic($m);
+        $interpretor = new BasicInterpretor($m);
         $result = $interpretor->interpret();
+        EntityManager::persist($result);
         $m->setResult($result);
 
-        EntityManager::persist();
+        EntityManager::flush();
     }
 }

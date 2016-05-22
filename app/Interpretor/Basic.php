@@ -55,8 +55,8 @@ class Basic
             $r->setRouting( 'NON_IXP' );
         }
 
-        $r->setPathOut( $pathOut );
-        $r->setPathIn(  $pathIn  );
+        $r->setPathOut( serialize( $pathOut ) );
+        $r->setPathIn(  serialize( $pathIn ) );
 
         return $r;
     }

@@ -16,7 +16,7 @@ class UpdateProbes extends Command
      *
      * @var string
      */
-    protected $signature = 'probes:update';
+    protected $signature = 'atlas:update-probes';
 
     /**
      * The console command description.
