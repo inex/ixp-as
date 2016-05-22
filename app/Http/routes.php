@@ -59,6 +59,9 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     $obj->snetwork->name = $r->getNetwork()->getName();
     $obj->snetwork->asn  = $r->getNetwork()->getV4ASN();
 
+    $obj->snetwork->ixp = new stdClass;
+    $obj->snetwork->ixp->shortname = $r->getNetwork()->getIXP()->getShortname();
+
     $obj->measurements = [];
 
     foreach( $r->getMeasurements() as $m ) {
@@ -83,7 +86,7 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
         return response()->json( $obj );
     }
 
-    return view('result', [ 'request' => json_encode( $obj ) ] );
+    return view('result', [ 'request' => $obj, 'nonce' => $nonce ] );
 })
     ->where( ['nonce' => '[0-9]+'] );
 
@@ -92,6 +95,10 @@ function createRequest() {
     $n = new Entities\Network();
     $n->setName('Cablecomm');
     $n->setV4ASN('44384');
+
+    $ixp = new Entities\IXP;
+    $ixp->setShortname('INEX');
+    $n->setIXP($ixp);
 
     $l = new Entities\LAN();
     $l->setName('Peering LAN1');
