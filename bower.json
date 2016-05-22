@@ -1,0 +1,22 @@
+{
+  "name": "ixp-as",
+  "description": "IXP Asymmetric Routing Detector",
+  "main": "",
+  "authors": [
+    "Someone <someone@exmaple.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/inex/ixp-as",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "react": "^15.1.0"
+  }
+}
