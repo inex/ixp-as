@@ -342,4 +342,3 @@ public function getDestinationNetwork()
 return $this->destinationNetwork;
 }
 }
-
