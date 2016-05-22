@@ -7,6 +7,8 @@
     <field name="atlas_id" type="integer" nullable="false"/>
     <field name="v4_enabled" type="boolean" nullable="true"/>
     <field name="v6_enabled" type="boolean" nullable="true"/>
+    <field name="v4_address" type="string" length="15" nullable="true"/>
+    <field name="v6_address" type="string" length="39" nullable="true"/>
     <many-to-one field="network" target-entity="Entities\Network" inversed-by="probes">
       <join-columns>
         <join-column name="network_id" referenced-column-name="id"/>

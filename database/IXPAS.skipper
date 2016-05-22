@@ -59,6 +59,8 @@
       <field name="v4_enabled" type="boolean" uuid="afbd6a0d-7de3-4ada-b34c-eee3c7f402d2"/>
       <field name="v6_enabled" type="boolean" uuid="6ef105ce-5431-4cc7-ada7-94cfcbf489c5"/>
       <field name="network_id" type="integer" uuid="ffc0d864-ab3a-46bf-bfa2-32ba85b84662"/>
+      <field name="v4_address" type="string" size="15" uuid="0b2f9306-d1cf-4db7-bfab-cd7937574c8c"/>
+      <field name="v6_address" type="string" size="39" uuid="975ef50f-2b3b-4405-a865-1b9ec6921eba"/>
       <orm-attributes>
         <attribute name="table">probes</attribute>
       </orm-attributes>
@@ -105,7 +107,7 @@
     </association>
     <entity name="\Entities\Result" local-name="Result" namespace="\Entities" uuid="80545fc6-58ee-4095-b738-ceecf0b40a1a">
       <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="2eb0b903-9357-46ab-b555-a83275cebe5d"/>
-      <field name="routing" type="string" enum-values="ASYM,SYM" uuid="9c21dc64-4040-4929-b3d4-27ee9578981e"/>
+      <field name="routing" type="string" enum-values="IXP_ASYM_OUT,IXP_ASYM_IN,IXP_SYM,NON_IXP" uuid="9c21dc64-4040-4929-b3d4-27ee9578981e"/>
       <field name="path_out" type="text" uuid="732eb0f4-862e-4f4b-83d1-6ed8f7a7caf1"/>
       <field name="path_in" type="text" uuid="c9da1bbd-8695-481b-af40-bcf113c10c8d"/>
       <field name="measurement_id" type="integer" unique="true" uuid="de7c7fd1-863b-463d-806a-3af8158611be"/>
@@ -130,7 +132,7 @@
     <entity uuid="02fd73b6-233d-41b0-adca-a3801922133a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="494" position-y="282" size-x="0" size-x2="126" size-y="0" size-y2="171"/>
     <entity uuid="0515b655-ca9d-45dd-992e-4e1df6bdfad1" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="341" position-y="8" size-x="0" size-x2="98" size-y="0" size-y2="101"/>
     <entity uuid="0fcd5869-c98e-44a3-b8db-2536b2b72503" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="10" position-y="20"/>
-    <entity uuid="25b0f132-c5fc-4980-bc90-988f7d80a803" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="14" position-y="408" size-x="0" size-x2="111" size-y="0" size-y2="87"/>
+    <entity uuid="25b0f132-c5fc-4980-bc90-988f7d80a803" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="11" position-y="408" size-x="0" size-x2="117" size-y="0" size-y2="115"/>
     <entity uuid="80545fc6-58ee-4095-b738-ceecf0b40a1a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="704" position-y="324" size-x="0" size-x2="127" size-y="0" size-y2="87"/>
     <entity uuid="92188065-4ee9-4618-ad6f-39ec99266b3f" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="20" position-y="231" size-x="0" size-x2="98" size-y="0" size-y2="87"/>
     <entity uuid="bd749464-5df2-48ad-8542-765979c93733" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="212" position-y="388" size-x="0" size-x2="108" size-y="0" size-y2="115"/>

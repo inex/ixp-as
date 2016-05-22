@@ -64,10 +64,10 @@ class Probe extends \Entities\Probe implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Probe' . "\0" . 'atlas_id', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'id', '' . "\0" . 'Entities\\Probe' . "\0" . 'network'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Probe' . "\0" . 'atlas_id', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'id', '' . "\0" . 'Entities\\Probe' . "\0" . 'network', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_address', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_address'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Probe' . "\0" . 'atlas_id', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'id', '' . "\0" . 'Entities\\Probe' . "\0" . 'network'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Probe' . "\0" . 'atlas_id', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_enabled', '' . "\0" . 'Entities\\Probe' . "\0" . 'id', '' . "\0" . 'Entities\\Probe' . "\0" . 'network', '' . "\0" . 'Entities\\Probe' . "\0" . 'v4_address', '' . "\0" . 'Entities\\Probe' . "\0" . 'v6_address'];
     }
 
     /**
@@ -274,6 +274,50 @@ class Probe extends \Entities\Probe implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetwork', []);
 
         return parent::getNetwork();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setV4Address($v4Address)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setV4Address', [$v4Address]);
+
+        return parent::setV4Address($v4Address);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getV4Address()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getV4Address', []);
+
+        return parent::getV4Address();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setV6Address($v6Address)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setV6Address', [$v6Address]);
+
+        return parent::setV6Address($v6Address);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getV6Address()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getV6Address', []);
+
+        return parent::getV6Address();
     }
 
 }

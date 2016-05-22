@@ -138,4 +138,62 @@ public function getNetwork()
 {
 return $this->network;
 }
+/**
+ * @var string
+ */
+private $v4_address;
+
+/**
+ * @var string
+ */
+private $v6_address;
+
+
+/**
+ * Set v4Address
+ *
+ * @param string $v4Address
+ *
+ * @return Probe
+ */
+public function setV4Address($v4Address)
+{
+$this->v4_address = $v4Address;
+
+return $this;
+}
+
+/**
+ * Get v4Address
+ *
+ * @return string
+ */
+public function getV4Address()
+{
+return $this->v4_address;
+}
+
+/**
+ * Set v6Address
+ *
+ * @param string $v6Address
+ *
+ * @return Probe
+ */
+public function setV6Address($v6Address)
+{
+$this->v6_address = $v6Address;
+
+return $this;
+}
+
+/**
+ * Get v6Address
+ *
+ * @return string
+ */
+public function getV6Address()
+{
+return $this->v6_address;
+}
 }
