@@ -19,7 +19,32 @@ Route::get(
 );
 
 Route::get('/', function () {
-    return view('index');
+    // populate array of IXPs -> Networks
+    $ixps = [];
+    foreach( Registry::getRepository('Entities\IXP')->findAll() as $ixp ) {
+        $i['id']        = $ixp->getId();
+        $i['name']      = $ixp->getName();
+        $i['shortname'] = $ixp->getShortname();
+        $i['networks'] = [];
+
+        foreach( $ixp->getNetworks() as $network ) {
+            if( !count( $network->getProbes() ) ) {
+                continue;
+            }
+
+            $n['id']      = $network->getId();
+            $n['name']    = $network->getName();
+            $n['v4']      = $network->getV4ASN() ? true : false;
+            $n['v6']      = $network->getV6ASN() ? true : false;
+            $n['v4asn']   = $network->getV4ASN();
+            $n['v6asn']   = $network->getV6ASN();
+            $i['networks'][] = $n;
+        }
+
+        $ixps[] = $i;
+    }
+
+    return view('index', [ 'ixps' => json_encode( $ixps ) ] );
 });
 
 Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
@@ -41,10 +66,14 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     $obj->snetwork->name = $r->getNetwork()->getName();
     $obj->snetwork->asn  = $r->getNetwork()->getV4ASN();
 
+    $obj->snetwork->ixp = new stdClass;
+    $obj->snetwork->ixp->shortname = $r->getNetwork()->getIXP()->getShortname();
+
     $obj->measurements = [];
 
     foreach( $r->getMeasurements() as $m ) {
         $mc = new stdClass;
+        $mc->id = $m->getId();
         $mc->dnetwork = new stdClass;
         $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
         $mc->dnetwork->asn  = $m->getDestinationNetwork()->getV4ASN();
@@ -65,7 +94,7 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
         return response()->json( $obj );
     }
 
-    return view('result', [ 'request' => json_encode( $obj ) ] );
+    return view('result', [ 'request' => $obj, 'nonce' => $nonce ] );
 })
     ->where( ['nonce' => '[0-9]+'] );
 
@@ -74,6 +103,10 @@ function createRequest() {
     $n = new Entities\Network();
     $n->setName('Cablecomm');
     $n->setV4ASN('44384');
+
+    $ixp = new Entities\IXP;
+    $ixp->setShortname('INEX');
+    $n->setIXP($ixp);
 
     $l = new Entities\LAN();
     $l->setName('Peering LAN1');

@@ -91,7 +91,6 @@ class UpdateProbes extends Command
                         $p->setV6Address( $probe->address_v6 );
                         EntityManager::persist( $p );
                     }
-
                 }
             } // protocols
 

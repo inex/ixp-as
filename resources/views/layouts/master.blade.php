@@ -36,6 +36,9 @@
         <script src="{{ URL::asset('bower_components/jquery/dist/jquery.min.js' ) }}"></script>
         <script src="{{ URL::asset('bower_components/bootstrap/dist/js/bootstrap.min.js' ) }}"></script>
         <script src="{{ URL::asset('bower_components/react/react.min.js' ) }}"></script>
-        <script src="{{ URL::asset('bower_components/react/react-dom.min.js' ) }}"></script>        
+        <script src="{{ URL::asset('bower_components/react/react-dom.min.js' ) }}"></script>
+
+        @yield('scripts')
+        
     </body>
 </html>
