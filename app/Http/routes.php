@@ -66,6 +66,7 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
 
     foreach( $r->getMeasurements() as $m ) {
         $mc = new stdClass;
+        $mc->id = $m->getId();
         $mc->dnetwork = new stdClass;
         $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
         $mc->dnetwork->asn  = $m->getDestinationNetwork()->getV4ASN();
