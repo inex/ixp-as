@@ -11,6 +11,13 @@
 |
 */
 
+Route::get('request_traceroute', 'RequestTracerouteController@showForm');
+
+Route::get(
+  'request/asn/{asn}/proto/{protocol}/ixp/{ixp}',
+  'RequestTracerouteController@requestTrace'
+);
+
 Route::get('/', function () {
     return view('index');
 });
