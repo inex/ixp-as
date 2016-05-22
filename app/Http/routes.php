@@ -12,7 +12,32 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    // populate array of IXPs -> Networks
+    $ixps = [];
+    foreach( Registry::getRepository('Entities\IXP')->findAll() as $ixp ) {
+        $i['id']        = $ixp->getId();
+        $i['name']      = $ixp->getName();
+        $i['shortname'] = $ixp->getShortname();
+        $i['networks'] = [];
+
+        foreach( $ixp->getNetworks() as $network ) {
+            if( !count( $network->getProbes() ) ) {
+                continue;
+            }
+
+            $n['id']      = $network->getId();
+            $n['name']    = $network->getName();
+            $n['v4']      = $network->getV4ASN() ? true : false;
+            $n['v6']      = $network->getV6ASN() ? true : false;
+            $n['v4asn']   = $network->getV4ASN();
+            $n['v6asn']   = $network->getV6ASN();
+            $i['networks'][] = $n;
+        }
+
+        $ixps[] = $i;
+    }
+
+    return view('index', [ 'ixps' => json_encode( $ixps ) ] );
 });
 
 Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
