@@ -5,23 +5,28 @@
       <div class="panel-heading" role="tab" id="heading-{{$m->id}}">
         <h4 class="panel-title">
           <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$m->id}}" aria-expanded="false" aria-controls="collapse-{{$m->id}}">
-            {{ $m->dnetwork->name}} (AS{{ $m->dnetwork->asn}})
+            {{ $m->dnetwork->name}} (AS{{ $m->dnetwork->asn}}) [v]
 
-            @if ( !$m->result )
-                <span class="label label-default">PENDING</span>
+            @if (isset($m->state) && $m->state == 'Failed' )
+
+                <span class="label label-primary pull-right">TRACE FAILED</span>
+
+            @elseif ( !$m->result )
+
+                <span class="label label-default pull-right">PENDING</span>
 
             @else
 
                 @if ( $m->result->routing == 'IXP_SYM' )
-                    <span class="label label-success">SYMMETRIC</span>
+                    <span class="label label-success pull-right">SYMMETRIC</span>
                 @elseif ( $m->result->routing == 'IXP_ASYM_OUT' )
-                    <span class="label label-danger">ASYMMETRIC OUT</span>
+                    <span class="label label-danger pull-right">ASYMMETRIC OUT</span>
                 @elseif ( $m->result->routing == 'IXP_ASYM_IN' )
-                    <span class="label label-danger">ASYMMETRIC IN</span>
+                    <span class="label label-danger pull-right">ASYMMETRIC IN</span>
                 @elseif ( $m->result->routing == 'NON_IXP' )
-                    <span class="label label-info">NON IXP</span>
+                    <span class="label label-info pull-right">NON IXP</span>
                 @else
-                    <span class="label label-primary">WTF?</span>
+                    <span class="label label-primary pull-right">WTF?</span>
                 @endif
 
 

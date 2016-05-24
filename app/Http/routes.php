@@ -74,9 +74,9 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     // build up JSON object for the result
     $obj = new stdClass;
     $obj->protocol  = $r->getProtocol();
-    $obj->created   = Carbon\Carbon::instance( $r->getCreated() )->toATOMString() . 'Z';
-    $obj->started   = $r->getStarted()   ? Carbon\Carbon::instance( $r->getStarted()   )->toATOMString()   . 'Z' : false;
-    $obj->completed = $r->getCompleted() ? Carbon\Carbon::instance( $r->getCompleted() )->toATOMString() . 'Z' : false;
+    $obj->created   = $r->getCreated();
+    $obj->started   = $r->getStarted();
+    $obj->completed = $r->getCompleted();
 
     $obj->snetwork = new stdClass;
     $obj->snetwork->name = $r->getNetwork()->getName();
@@ -90,6 +90,12 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     foreach( $r->getMeasurements() as $m ) {
         $mc = new stdClass;
         $mc->id = $m->getId();
+
+        if( $m->getAtlasOutState() == 'Failed' || $m->getAtlasOutState() == 'ABANDONNED'
+                || $m->getAtlasInState() == 'Failed' || $m->getAtlasInState() == 'ABANDONNED' ) {
+            $mc->state = 'Failed';
+        }
+
         $mc->dnetwork = new stdClass;
         $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
         $mc->dnetwork->asn  = $m->getDestinationNetwork()->getV4ASN();
@@ -107,6 +113,11 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     }
 
     if( strtolower( $json ) == 'json' ) {
+        // rewrite dates to JS
+        $obj->created   = Carbon\Carbon::instance( $r->getCreated() )->toATOMString() . 'Z';
+        $obj->started   = $r->getStarted()   ? Carbon\Carbon::instance( $r->getStarted()   )->toATOMString()   . 'Z' : false;
+        $obj->completed = $r->getCompleted() ? Carbon\Carbon::instance( $r->getCompleted() )->toATOMString() . 'Z' : false;
+
         return response()->json( $obj );
     }
 
