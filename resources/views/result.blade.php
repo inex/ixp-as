@@ -9,7 +9,7 @@
 
 <ul>
     <li> <strong>Requested:</strong> {{ $request->created->format('Y-m-d H:i:s') }} </li>
-    <li> <strong>Started:</strong> {{ $request->created ? $request->created->format('Y-m-d H:i:s') : 'Pending' }} </li>
+    <li> <strong>Started:</strong> {{ $request->started ? $request->started->format('Y-m-d H:i:s') : 'Pending' }} </li>
     @if ($request->started)
         <li> <strong>Completed:</strong> {{ $request->completed ? $request->completed->format('Y-m-d H:i:s') : 'Still running' }} </li>
     @endif
