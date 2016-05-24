@@ -51,11 +51,9 @@
     <br>
     <h4>Step 4: Submit!</h4>
 
-    <form method="post" action="{{ URL::to('/request') }}">
-        <input type="hidden" id="form_network"  name="network_id" value="" />
-        <input type="hidden" id="form_protocol" name="protocol" value="" />
-        <input type="submit" name="submit" value="Submit" />
-    </form>
+    <a type="button" class="btn btn-primary" id="btn_submit" href="">
+        Submit
+    </a>
 
 </div>
 
@@ -66,6 +64,7 @@
 @section('scripts')
 <script>
     var ixps = {!! $ixps !!};
+    var url  = "{!! URL::to('/request') !!}";
 </script>
 
 <script src="{{ URL::asset('js/request.js' ) }}"></script>

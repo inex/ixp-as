@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('request_traceroute', 'RequestTracerouteController@showForm');
-
-Route::get(
-  'request/asn/{asn}/proto/{protocol}/ixp/{ixp}',
-  'RequestTracerouteController@requestTrace'
-);
-
 Route::get('/', function () {
     // populate array of IXPs -> Networks
     $ixps = [];
@@ -47,20 +40,43 @@ Route::get('/', function () {
     return view('index', [ 'ixps' => json_encode( $ixps ) ] );
 });
 
+Route::get('/request/{network_id}/{protocol}/{json?}',function( $network_id, $protocol, $json = false ){
+    if( !( $n = Registry::getRepository('Entities\Network')->find( $network_id ) ) ) {
+        App::abort(404);
+    }
+
+    $r = new Entities\Request;
+    $r->setNetwork($n);
+    $r->setProtocol($protocol);
+    $r->setCreated( new Carbon\Carbon );
+    EntityManager::persist($r);
+    EntityManager::flush();
+    $r->setNonce( $r->getId() . '-' . strtolower(str_random(8)) . '-' . strtolower(str_random(8)) . '-' . strtolower(str_random(8)) );
+    EntityManager::flush();
+
+    if( strtolower( $json ) == 'json' ) {
+        return response()->json( ['request_nonce' => $r->getNonce()] );
+    }
+
+    return redirect( '/result/' . $r->getNonce() );
+})
+    ->where( [
+        'network_id' => '[0-9]+',
+        'protocol'   => '[46]{1,1}'
+    ] );
+
+
 Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     if( !( $r = Registry::getRepository('Entities\Request')->findOneBy( ['nonce' => $nonce ] ) ) ) {
         App::abort(404);
     }
 
-    // tmp
-    // $r = createRequest();
-
     // build up JSON object for the result
     $obj = new stdClass;
     $obj->protocol  = $r->getProtocol();
-    $obj->created   = Carbon\Carbon::parse( $r->getCreated() )->toATOMString() . 'Z';
-    $obj->started   = $r->getStarted()   ? Carbon\Carbon::parse( $r->getStarted()   )->toATOMString() . 'Z' : null;
-    $obj->completed = $r->getCompleted() ? Carbon\Carbon::parse( $r->getCompleted() )->toATOMString() . 'Z' : null;
+    $obj->created   = Carbon\Carbon::instance( $r->getCreated() )->toATOMString() . 'Z';
+    $obj->started   = $r->getStarted()   ? Carbon\Carbon::instance( $r->getStarted()   )->toATOMString()   . 'Z' : false;
+    $obj->completed = $r->getCompleted() ? Carbon\Carbon::instance( $r->getCompleted() )->toATOMString() . 'Z' : false;
 
     $obj->snetwork = new stdClass;
     $obj->snetwork->name = $r->getNetwork()->getName();
@@ -96,7 +112,7 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
 
     return view('result', [ 'request' => $obj, 'nonce' => $nonce ] );
 })
-    ->where( ['nonce' => '[0-9]+'] );
+    ->where( ['nonce' => '[\d]+\-[\w]{8,8}-[\w]{8,8}-[\w]{8,8}'] );
 
 
 function createRequest() {

@@ -15,12 +15,10 @@ $( document ).ready( function(){
 
     $('#network_select').on( 'change', function() {
         if( $('#network_select' ).val() === '' ) {
-            $('#form_network' ).val( '' );
-            $('#form_protocol').val( '' );
+            $('#btn_submit').attr( 'href', '');
             $('#div_submit').hide();
         } else {
-            $('#form_network' ).val( $('#network_select').val() );
-            $('#form_protocol').val( $('#protocol_select').val() );
+            $('#btn_submit').attr( 'href', url + "/" + $('#network_select').val() + "/" + $('#protocol_select').val() );
             $('#div_submit').show();
         }
     });
