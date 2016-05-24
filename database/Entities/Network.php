@@ -40,6 +40,7 @@ public function __construct()
 $this->addresses = new \Doctrine\Common\Collections\ArrayCollection();
 $this->probes = new \Doctrine\Common\Collections\ArrayCollection();
 $this->requests = new \Doctrine\Common\Collections\ArrayCollection();
+$this->IXPs = new \Doctrine\Common\Collections\ArrayCollection();
 }
 
 /**
