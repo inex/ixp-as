@@ -12,6 +12,10 @@
     <field name="atlas_in_stop" type="datetime" nullable="true"/>
     <field name="atlas_out_data" type="text" nullable="true"/>
     <field name="atlas_in_data" type="text" nullable="true"/>
+    <field name="atlas_out_request_data" type="text" nullable="true"/>
+    <field name="atlas_in_request_data" type="text" nullable="true"/>
+    <field name="atlas_in_state" type="string" nullable="true"/>
+    <field name="atlas_out_state" type="string" nullable="true"/>
     <many-to-one field="request" target-entity="Entities\Request" inversed-by="measurements">
       <join-columns>
         <join-column name="request_id" referenced-column-name="id"/>

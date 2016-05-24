@@ -341,4 +341,120 @@ public function getDestinationNetwork()
 {
 return $this->destinationNetwork;
 }
+/**
+ * @var string
+ */
+private $atlas_out_request_data;
+
+/**
+ * @var string
+ */
+private $atlas_in_request_data;
+
+
+/**
+ * Set atlasOutRequestData
+ *
+ * @param string $atlasOutRequestData
+ *
+ * @return Measurement
+ */
+public function setAtlasOutRequestData($atlasOutRequestData)
+{
+$this->atlas_out_request_data = $atlasOutRequestData;
+
+return $this;
+}
+
+/**
+ * Get atlasOutRequestData
+ *
+ * @return string
+ */
+public function getAtlasOutRequestData()
+{
+return $this->atlas_out_request_data;
+}
+
+/**
+ * Set atlasInRequestData
+ *
+ * @param string $atlasInRequestData
+ *
+ * @return Measurement
+ */
+public function setAtlasInRequestData($atlasInRequestData)
+{
+$this->atlas_in_request_data = $atlasInRequestData;
+
+return $this;
+}
+
+/**
+ * Get atlasInRequestData
+ *
+ * @return string
+ */
+public function getAtlasInRequestData()
+{
+return $this->atlas_in_request_data;
+}
+/**
+ * @var string
+ */
+private $atlas_in_state;
+
+/**
+ * @var string
+ */
+private $atlas_out_state;
+
+
+/**
+ * Set atlasInState
+ *
+ * @param string $atlasInState
+ *
+ * @return Measurement
+ */
+public function setAtlasInState($atlasInState)
+{
+$this->atlas_in_state = $atlasInState;
+
+return $this;
+}
+
+/**
+ * Get atlasInState
+ *
+ * @return string
+ */
+public function getAtlasInState()
+{
+return $this->atlas_in_state;
+}
+
+/**
+ * Set atlasOutState
+ *
+ * @param string $atlasOutState
+ *
+ * @return Measurement
+ */
+public function setAtlasOutState($atlasOutState)
+{
+$this->atlas_out_state = $atlasOutState;
+
+return $this;
+}
+
+/**
+ * Get atlasOutState
+ *
+ * @return string
+ */
+public function getAtlasOutState()
+{
+return $this->atlas_out_state;
+}
 }

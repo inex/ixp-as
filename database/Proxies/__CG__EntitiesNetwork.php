@@ -408,4 +408,15 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
         return parent::getMeasurements();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getProbesByProtocol($protocol)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProbesByProtocol', [$protocol]);
+
+        return parent::getProbesByProtocol($protocol);
+    }
+
 }

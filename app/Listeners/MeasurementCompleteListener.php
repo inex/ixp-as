@@ -39,7 +39,7 @@ class MeasurementCompleteListener
         $interpretor = new BasicInterpretor($m);
         $result = $interpretor->interpret();
         EntityManager::persist($result);
-        $m->setResult($result);
+        $result->setMeasurement( $m );
 
         EntityManager::flush();
     }

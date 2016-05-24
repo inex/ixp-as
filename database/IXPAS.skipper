@@ -95,6 +95,10 @@
       <field name="atlas_in_data" type="text" uuid="dbd1085d-ca47-4fe7-8176-d64464850473"/>
       <field name="request_id" type="integer" uuid="fc267fb3-e437-4ed1-b9f5-1a1f0822cd9c"/>
       <field name="network_id" type="integer" uuid="f4598a36-0233-49d2-a195-02fd67652f46"/>
+      <field name="atlas_out_request_data" type="text" uuid="a6afdcf2-a5b8-499e-85d0-93428f773dd7"/>
+      <field name="atlas_in_request_data" type="text" uuid="7fecd1fb-cf89-4e8e-b770-ccfa9b6adf44"/>
+      <field name="atlas_in_state" type="string" uuid="8709f1ab-6c0f-423a-a1da-f04ddcfb5dae"/>
+      <field name="atlas_out_state" type="string" uuid="3b59b68e-0c66-47c6-8559-4adc720ba601"/>
       <orm-attributes>
         <attribute name="table">measurements</attribute>
       </orm-attributes>

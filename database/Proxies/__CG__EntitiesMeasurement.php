@@ -64,10 +64,10 @@ class Measurement extends \Entities\Measurement implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'result', '' . "\0" . 'Entities\\Measurement' . "\0" . 'request', '' . "\0" . 'Entities\\Measurement' . "\0" . 'destinationNetwork'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'result', '' . "\0" . 'Entities\\Measurement' . "\0" . 'request', '' . "\0" . 'Entities\\Measurement' . "\0" . 'destinationNetwork', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_request_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_request_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_state', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_state'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'result', '' . "\0" . 'Entities\\Measurement' . "\0" . 'request', '' . "\0" . 'Entities\\Measurement' . "\0" . 'destinationNetwork'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_start', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_stop', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'id', '' . "\0" . 'Entities\\Measurement' . "\0" . 'result', '' . "\0" . 'Entities\\Measurement' . "\0" . 'request', '' . "\0" . 'Entities\\Measurement' . "\0" . 'destinationNetwork', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_request_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_request_data', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_in_state', '' . "\0" . 'Entities\\Measurement' . "\0" . 'atlas_out_state'];
     }
 
     /**
@@ -428,6 +428,94 @@ class Measurement extends \Entities\Measurement implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDestinationNetwork', []);
 
         return parent::getDestinationNetwork();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAtlasOutRequestData($atlasOutRequestData)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtlasOutRequestData', [$atlasOutRequestData]);
+
+        return parent::setAtlasOutRequestData($atlasOutRequestData);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAtlasOutRequestData()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAtlasOutRequestData', []);
+
+        return parent::getAtlasOutRequestData();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAtlasInRequestData($atlasInRequestData)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtlasInRequestData', [$atlasInRequestData]);
+
+        return parent::setAtlasInRequestData($atlasInRequestData);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAtlasInRequestData()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAtlasInRequestData', []);
+
+        return parent::getAtlasInRequestData();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAtlasInState($atlasInState)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtlasInState', [$atlasInState]);
+
+        return parent::setAtlasInState($atlasInState);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAtlasInState()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAtlasInState', []);
+
+        return parent::getAtlasInState();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAtlasOutState($atlasOutState)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtlasOutState', [$atlasOutState]);
+
+        return parent::setAtlasOutState($atlasOutState);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAtlasOutState()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAtlasOutState', []);
+
+        return parent::getAtlasOutState();
     }
 
 }

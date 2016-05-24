@@ -38,9 +38,11 @@
                   <h4>Trace Out: AS{{$request->snetwork->asn}} to AS{{ $m->dnetwork->asn}}<h4>
 
                   <ul>
-                      @foreach ( $m->result->path_out as $hop )
-                        <li> {{ $hop }} </li>
-                      @endforeach
+                      @if ( isset($m->result->path_out) )
+                          @foreach ( $m->result->path_out as $hop )
+                            <li> {{ $hop }} </li>
+                          @endforeach
+                      @endif
                   </ul>
 
               </div>
@@ -48,9 +50,11 @@
                   <h4>Trace In: AS{{ $m->dnetwork->asn}} to AS{{$request->snetwork->asn}}<h4>
 
                   <ul>
-                      @foreach ( $m->result->path_in as $hop )
-                        <li> {{ $hop }} </li>
-                      @endforeach
+                      @if ( isset($m->result->path_in) )
+                          @foreach ( $m->result->path_in as $hop )
+                            <li> {{ $hop }} </li>
+                          @endforeach
+                      @endif
                   </ul>
 
               </div>

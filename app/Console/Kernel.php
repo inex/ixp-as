@@ -14,8 +14,12 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
+        Commands\CreateMeasurements::class,
+        Commands\RunMeasurements::class,
         Commands\UpdateProbes::class,
         Commands\UpdateMeasurements::class,
+        Commands\StopAllMeasurements::class,
+        Commands\CompleteRequests::class,
     ];
 
     /**
@@ -26,8 +30,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // process new requests and create measurements
+        $schedule->command('atlas:create-measurements')
+                 ->everyMinute();
+
+        $schedule->command('atlas:run-measurements')
+                 ->everyMinute();
+
         $schedule->command('atlas:update-measurements')
-                 ->everyFiveMinutes();
+                 ->everyMinute();
+
+        $schedule->command('atlas:complete-requests')
+                 ->everyMinute();
 
         $schedule->command('atlas:update-probes')
                 ->daily();

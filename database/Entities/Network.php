@@ -303,4 +303,26 @@ public function getMeasurements()
 {
 return $this->measurements;
 }
+
+
+/**
+ * Get probes
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getProbesByProtocol($protocol)
+{
+    $enabled = $protocol == 4 ? 'getV4Enabled' : 'getV6Enabled';
+
+    $probes = [];
+    foreach( $this->getProbes() as $probe ) {
+        if( $probe->$enabled() ) {
+            $probes[] = $probe;
+        }
+    }
+
+    return $probes;
+}
+
+
 }

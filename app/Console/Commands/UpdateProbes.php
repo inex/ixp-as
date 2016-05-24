@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use Registry;
 use EntityManager;
 
@@ -62,6 +60,8 @@ class UpdateProbes extends Command
                             $p->fnSet(false);
                         }
 
+                        $this->comment("Removed 'gone away' probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
+
                         if( !$p->getV4Enabled() && !$p->getV6Enabled() ) {
                             EntityManager::remove($p);
                         }
@@ -77,6 +77,7 @@ class UpdateProbes extends Command
                                     $key = 'address_v' . $protocol;
                                     $p->fnIpSet( $probe->$key );
                                 }
+                                $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                                 continue 2;
                             }
                         }
@@ -90,6 +91,7 @@ class UpdateProbes extends Command
                         $p->setV6Enabled( $probe->address_v6 != null );
                         $p->setV6Address( $probe->address_v6 );
                         EntityManager::persist( $p );
+                        $this->info("Added probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                     }
                 }
             } // protocols
@@ -100,7 +102,7 @@ class UpdateProbes extends Command
 
 
     private function queryAtlasForProbes( $asn, $protocol ) {
-        $json = file_get_contents( sprintf( "https://atlas.ripe.net/api/v2/probes/?asn_v%d=%d&is_public=true", $protocol, $asn ) );
+        $json = file_get_contents( sprintf( "https://atlas.ripe.net/api/v2/probes/?asn_v%d=%d&is_public=true&status=1", $protocol, $asn ) );
 
         if( $json && strlen( $json ) ) {
             return json_decode( $json );
