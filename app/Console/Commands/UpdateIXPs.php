@@ -100,6 +100,9 @@ class UpdateIXPs extends Command
         $vlans = $this->updateLANs( $importer, $ixp, $ixe );
 
         $members = $this->updateNetworks( $importer, $ixp, $ixe, $vlans );
+
+        $ixe->setLastUpdated( new Carbon );
+        EntityManager::flush();
     }
 
     private function updateNetworks( $importer, $ixp, $ixe, $vlans ) {
