@@ -169,7 +169,7 @@ class UpdateIXPs extends Command
                         $a->setNetwork( $me );
                         $a->setLAN( $vlans[ $vl->vlan_id ] );
                         $a->setProtocol( $protocol );
-                        $a->setAddress( ($vl->$af)->address );
+                        $a->setAddress( $vl->$af->address );
                         EntityManager::persist($a);
                     }
                 }
