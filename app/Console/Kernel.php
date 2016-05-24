@@ -33,22 +33,22 @@ class Kernel extends ConsoleKernel
     {
         // process new requests and create measurements
         $schedule->command('atlas:create-measurements')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
 
         $schedule->command('atlas:run-measurements')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
 
         $schedule->command('atlas:update-measurements')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
 
         $schedule->command('atlas:complete-requests')
-                 ->everyMinute();
+                 ->everyMinute()->withoutOverlapping();
 
         $schedule->command('ixps:update')
-                 ->daily();
+                 ->daily()->withoutOverlapping();
 
         $schedule->command('atlas:update-probes')
-                ->daily();
+                ->daily()->withoutOverlapping();
 
     }
 }
