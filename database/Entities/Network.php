@@ -15,16 +15,6 @@ private $name;
 /**
  * @var integer
  */
-private $v4asn;
-
-/**
- * @var integer
- */
-private $v6asn;
-
-/**
- * @var integer
- */
 private $id;
 
 /**
@@ -41,11 +31,6 @@ private $probes;
  * @var \Doctrine\Common\Collections\Collection
  */
 private $requests;
-
-/**
- * @var \Entities\IXP
- */
-private $IXP;
 
 /**
  * Constructor
@@ -81,53 +66,6 @@ public function getName()
 return $this->name;
 }
 
-/**
- * Set v4asn
- *
- * @param integer $v4asn
- *
- * @return Network
- */
-public function setV4asn($v4asn)
-{
-$this->v4asn = $v4asn;
-
-return $this;
-}
-
-/**
- * Get v4asn
- *
- * @return integer
- */
-public function getV4asn()
-{
-return $this->v4asn;
-}
-
-/**
- * Set v6asn
- *
- * @param integer $v6asn
- *
- * @return Network
- */
-public function setV6asn($v6asn)
-{
-$this->v6asn = $v6asn;
-
-return $this;
-}
-
-/**
- * Get v6asn
- *
- * @return integer
- */
-public function getV6asn()
-{
-return $this->v6asn;
-}
 
 /**
  * Get id
@@ -241,29 +179,7 @@ public function getRequests()
 return $this->requests;
 }
 
-/**
- * Set iXP
- *
- * @param \Entities\IXP $iXP
- *
- * @return Network
- */
-public function setIXP(\Entities\IXP $iXP = null)
-{
-$this->IXP = $iXP;
 
-return $this;
-}
-
-/**
- * Get iXP
- *
- * @return \Entities\IXP
- */
-public function getIXP()
-{
-return $this->IXP;
-}
 /**
  * @var \Doctrine\Common\Collections\Collection
  */
@@ -369,15 +285,6 @@ return $this->IXPs;
  */
 private $asn;
 
-/**
- * @var boolean
- */
-private $v4_available;
-
-/**
- * @var boolean
- */
-private $v6_available;
 
 
 /**
@@ -404,53 +311,6 @@ public function getAsn()
 return $this->asn;
 }
 
-/**
- * Set v4Available
- *
- * @param boolean $v4Available
- *
- * @return Network
- */
-public function setV4Available($v4Available)
-{
-$this->v4_available = $v4Available;
-
-return $this;
-}
-
-/**
- * Get v4Available
- *
- * @return boolean
- */
-public function getV4Available()
-{
-return $this->v4_available;
-}
-
-/**
- * Set v6Available
- *
- * @param boolean $v6Available
- *
- * @return Network
- */
-public function setV6Available($v6Available)
-{
-$this->v6_available = $v6Available;
-
-return $this;
-}
-
-/**
- * Get v6Available
- *
- * @return boolean
- */
-public function getV6Available()
-{
-return $this->v6_available;
-}
 
     // oh such a fucking hack
     // FIXME we're killing databases here :-(
