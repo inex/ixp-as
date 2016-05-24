@@ -78,7 +78,7 @@ class UpdateMeasurements extends Command
             if( $measurement->status->name == "Stopped" ) {
                 $m->$setAtlasStoppedFn( new Carbon() );
                 $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() . '/result' ) );
-            } else if( $measurement->status->name == "Failed" ) {
+            } else if( in_array( $measurement->status->name, [ "Failed", "No suitable probes" ] ) ) {
                 $m->$setAtlasStoppedFn( new Carbon() );
             }
         }

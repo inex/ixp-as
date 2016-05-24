@@ -113,12 +113,23 @@ class UpdateIXPs extends Command
 
                 $me = new Network();
 
-                $ixe->addNetwork($me);
-                $me->addIXP($ixe);
-
                 $me->setAsn( $member->asnum );
 
                 EntityManager::persist( $me );
+            }
+
+            $joinedToIXP = false;
+            foreach( $me->getIXPs() as $ii ) {
+                if( $ii->getId() == $ixe->getId() ) {
+                    $joinedToIXP = true;
+                    break;
+                }
+            }
+
+            if( !$joinedToIXP ) {
+                $this->info("  - {Network $member->name} does not exist in IXP -> adding");
+                $ixe->addNetwork($me);
+                $me->addIXP($ixe);
             }
 
             $me->setName( $member->name );

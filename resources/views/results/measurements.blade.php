@@ -7,7 +7,7 @@
           <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$m->id}}" aria-expanded="false" aria-controls="collapse-{{$m->id}}">
             {{ $m->dnetwork->name}} (AS{{ $m->dnetwork->asn}}) [v]
 
-            @if (isset($m->state) && $m->state == 'Failed' )
+            @if (isset($m->state) && in_array( $m->state, [ 'Failed', 'No suitable probes' ] ) )
 
                 <span class="label label-primary pull-right">TRACE FAILED</span>
 

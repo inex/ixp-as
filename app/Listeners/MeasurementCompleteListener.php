@@ -35,6 +35,13 @@ class MeasurementCompleteListener
         // get the measurement ORM entity
         $m = $event->measurement;
 
+        // if there's already a result, delete it as this is a rerun
+        if( $r = $m->getResult() ) {
+            $m->setResult(null);
+            EntityManager::remove($r);
+            EntityManager::flush();
+        }
+
         // interpret the measurement
         $interpretor = new BasicInterpretor($m);
         $result = $interpretor->interpret();

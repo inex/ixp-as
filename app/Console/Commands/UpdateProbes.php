@@ -59,10 +59,9 @@ class UpdateProbes extends Command
                     // no probes - delete any if they exist
                     foreach( $network->getProbes() as $p ) {
                         if( $p->$fnGet() ) {
-                            $p->fnSet(false);
+                            $p->$fnSet(false);
+                            $this->comment("Removed 'gone away' probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                         }
-
-                        $this->comment("Removed 'gone away' probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
 
                         if( !$p->getV4Enabled() && !$p->getV6Enabled() ) {
                             EntityManager::remove($p);
@@ -78,8 +77,8 @@ class UpdateProbes extends Command
                                     $p->$fnSet( true );
                                     $key = 'address_v' . $protocol;
                                     $p->fnIpSet( $probe->$key );
+                                    $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                                 }
-                                $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                                 continue 2;
                             }
                         }
