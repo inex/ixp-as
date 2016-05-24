@@ -42,12 +42,14 @@ class UpdateMeasurements extends Command
      */
     public function handle()
     {
+        if( $this->isVerbose() ) { $this->info("---- UPDATE MEASUREMENTS START ----"); }
         // find uncompleted measurements:
         foreach( [ 'atlas_in_stop', 'atlas_out_stop' ] as $id ) {
             foreach( Registry::getRepository('Entities\Measurement')->findBy( [ $id => null ] ) as $m ) {
                 $this->process( $m, $id == 'atlas_in_stop' ? 'In' : 'Out' );
             }
         }
+        if( $this->isVerbose() ) { $this->info("---- UPDATE MEASUREMENTS STOP  ----"); }
     }
 
 
@@ -59,6 +61,10 @@ class UpdateMeasurements extends Command
         $getAtlasRequestDataFn = "getAtlas{$dir}RequestData";
         $setAtlasState         = "setAtlas{$dir}State";
 
+        if( !$m->$getAtlasIdFn() ) {
+            return;
+        }
+
         if( $this->isVerbose() ) {
             $this->info( 'Checking result for measurement ' . $m->$getAtlasIdFn() );
         }
@@ -66,13 +72,15 @@ class UpdateMeasurements extends Command
         $m->$setAtlasRequestDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() ) );
         $measurement = json_decode( $m->$getAtlasRequestDataFn() );
 
-        $m->$setAtlasState($measurement->status->name);
+        if( isset( $measurement->status->name ) ) {
+            $m->$setAtlasState($measurement->status->name);
 
-        if( $measurement->status->name == "Stopped" ) {
-            $m->$setAtlasStoppedFn( new Carbon() );
-            $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() . '/result' ) );
-        } else if( $measurement->status->name == "Failed" ) {
-            $m->$setAtlasStoppedFn( new Carbon() );
+            if( $measurement->status->name == "Stopped" ) {
+                $m->$setAtlasStoppedFn( new Carbon() );
+                $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() . '/result' ) );
+            } else if( $measurement->status->name == "Failed" ) {
+                $m->$setAtlasStoppedFn( new Carbon() );
+            }
         }
 
         EntityManager::flush();
@@ -88,7 +96,7 @@ class UpdateMeasurements extends Command
         // after an hour, consider outstanding measurements as dead
         $current = Carbon::now();
 
-        if( !$m->getAtlasInStop() && Carbon::instance( $m->getAtlasInStart() )->diffInHours($current) <= -1 ) {
+        if( $m->getAtlasInStart() && !$m->getAtlasInStop() && Carbon::instance( $m->getAtlasInStart() )->diffInHours($current) <= -1 ) {
             if( $this->isVerbose() ) {
                 $this->info( 'Expiring in measurement ' . $m->$getAtlasIdFn() );
             }
@@ -97,7 +105,7 @@ class UpdateMeasurements extends Command
             $this->atlasStopMeasurement( $m->getAtlasInId() );
         }
 
-        if( !$m->getAtlasOutStop() && Carbon::instance( $m->getAtlasOutStart() )->diffInHours($current) <= -1 ) {
+        if( $m->getAtlasOutStart() && !$m->getAtlasOutStop() && Carbon::instance( $m->getAtlasOutStart() )->diffInHours($current) <= -1 ) {
             if( $this->isVerbose() ) {
                 $this->info( 'Expiring out measurement ' . $m->$getAtlasIdFn() );
             }

@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         Commands\UpdateMeasurements::class,
         Commands\StopAllMeasurements::class,
         Commands\CompleteRequests::class,
+        Commands\UpdateIXPs::class,
     ];
 
     /**
@@ -43,7 +44,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('atlas:complete-requests')
                  ->everyMinute();
 
+        $schedule->command('ixps:update')
+                 ->daily();
+
         $schedule->command('atlas:update-probes')
                 ->daily();
+
     }
 }

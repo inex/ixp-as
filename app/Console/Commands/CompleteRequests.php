@@ -45,6 +45,8 @@ class CompleteRequests extends Command
      */
     public function handle()
     {
+        if( $this->isVerbose() ) { $this->info("---- COMPLETE REQUESTS START ----"); }
+
         // find new requests:
         if( !( $requests = Registry::getRepository('Entities\Request')->findBy( ['completed' => null ] ) ) ) {
             if( $this->isVerbose() ) {
@@ -56,6 +58,8 @@ class CompleteRequests extends Command
         foreach( $requests as $r ) {
             $this->process( $r );
         }
+
+        if( $this->isVerbose() ) { $this->info("---- COMPLETE REQUESTS STOP  ----"); }
     }
 
     private function process( Request $r ) {

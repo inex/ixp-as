@@ -7,7 +7,11 @@
     <field name="name" type="string" length="255" nullable="true"/>
     <field name="shortname" type="string" length="255" nullable="true"/>
     <field name="country" type="string" length="2" nullable="false"/>
+    <field name="created" type="datetime" nullable="true"/>
+    <field name="lastupdated" type="datetime" nullable="true"/>
+    <field name="ixf_id" type="integer" unique="true" nullable="true"/>
     <one-to-many field="LANs" target-entity="Entities\LAN" mapped-by="IXP"/>
-    <one-to-many field="networks" target-entity="Entities\Network" mapped-by="IXP"/>
+    <one-to-many field="request" target-entity="Entities\Request" mapped-by="IXP"/>
+    <many-to-many field="networks" target-entity="Entities\Network" mapped-by="IXPs"/>
   </entity>
 </doctrine-mapping>

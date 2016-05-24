@@ -40,11 +40,13 @@ class UpdateProbes extends Command
      */
     public function handle()
     {
+        if( $this->isVerbose() ) { $this->info("---- PROBES UPDATE START ----"); }
+
         // iterate over networks
         foreach( Registry::getRepository('Entities\Network')->findAll() as $network ) {
             foreach( [ 4, 6 ] as $protocol ) {
                 // get the network's probes from RIPE Atlas
-                $probes = $this->queryAtlasForProbes( $protocol == 4 ? $network->getV4ASN() : $network->getV6ASN(), $protocol );
+                $probes = $this->queryAtlasForProbes( $network->getAsn(), $protocol );
 
                 // fn names for later:
                 $fnGet = "getV{$protocol}Enabled";
@@ -98,6 +100,7 @@ class UpdateProbes extends Command
 
             EntityManager::flush();
         } // networks
+        if( $this->isVerbose() ) { $this->info("---- PROBES UPDATE STOP ----"); }
     }
 
 

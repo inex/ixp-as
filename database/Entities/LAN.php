@@ -213,4 +213,33 @@ public function getIXP()
 {
 return $this->IXP;
 }
+/**
+ * @var integer
+ */
+private $ixp_vlan_id;
+
+
+/**
+ * Set ixpVlanId
+ *
+ * @param integer $ixpVlanId
+ *
+ * @return LAN
+ */
+public function setIxpVlanId($ixpVlanId)
+{
+$this->ixp_vlan_id = $ixpVlanId;
+
+return $this;
+}
+
+/**
+ * Get ixpVlanId
+ *
+ * @return integer
+ */
+public function getIxpVlanId()
+{
+return $this->ixp_vlan_id;
+}
 }

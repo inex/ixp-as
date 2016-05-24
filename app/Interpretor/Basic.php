@@ -5,6 +5,7 @@ namespace App\Interpretor;
 use Entities\Measurement;
 use Entities\Result;
 use Entities\Network;
+use Entities\IXP;
 
 class Basic
 {
@@ -27,12 +28,12 @@ class Basic
     /**
      * Basic Interpretor
      */
-    public function interpret(): Result {
+    public function interpret() {
         $m = $this->measurement;
 
         // what is the source network's peering addresses?
-        $srcAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getNetwork(), $m->getRequest()->getProtocol() );
-        $dstAddrs = $this->getAddressesFromNetwork( $m->getDestinationNetwork(),    $m->getRequest()->getProtocol() );
+        $srcAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getRequest()->getNetwork(), $m->getRequest()->getProtocol() );
+        $dstAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getDestinationNetwork(),    $m->getRequest()->getProtocol() );
 
         $atlasOut = json_decode($m->getAtlasOutData());
         $atlasIn  = json_decode($m->getAtlasInData() );
@@ -69,7 +70,7 @@ class Basic
      * @param array $tracert Raw RIPE Atles JSON result as PHP
      * @return path The path
      */
-    private function parsePath( array $tracert ): array {
+    private function parsePath( array $tracert ) {
         $path = [];
 
         foreach( $tracert[0]->result as $e ) {
@@ -94,7 +95,7 @@ class Basic
      * @param array $addrs List of addresses to find in $path
      * @return bool
      */
-    private function queryPassesThrough( array $path, array $addrs ): bool {
+    private function queryPassesThrough( array $path, array $addrs ) {
 
         foreach( $path as $ip ) {
             if( in_array( $ip, $addrs ) ) {
@@ -112,13 +113,16 @@ class Basic
      * @param int $p The protocol
      * @return array Array of addresses
      */
-    private function getAddressesFromNetwork( Network $n, int $p ): array {
+    private function getAddressesFromNetwork( IXP $ixp, Network $n, int $p ) {
         $addrs = [];
         foreach( $n->getAddresses() as $a ) {
             if( $a->getProtocol() != $p ) {
                 continue;
             }
-            $addrs[] = $a->getAddress();
+
+            if( $a->getLAN()->getIXP()->getId() == $ixp->getId() ) {
+                $addrs[] = $a->getAddress();
+            }
         }
         return $addrs;
     }

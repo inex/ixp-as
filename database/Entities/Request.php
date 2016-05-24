@@ -242,4 +242,33 @@ public function getMeasurements()
 {
 return $this->measurements;
 }
+/**
+ * @var \Entities\IXP
+ */
+private $IXP;
+
+
+/**
+ * Set iXP
+ *
+ * @param \Entities\IXP $iXP
+ *
+ * @return Request
+ */
+public function setIXP(\Entities\IXP $iXP = null)
+{
+$this->IXP = $iXP;
+
+return $this;
+}
+
+/**
+ * Get iXP
+ *
+ * @return \Entities\IXP
+ */
+public function getIXP()
+{
+return $this->IXP;
+}
 }

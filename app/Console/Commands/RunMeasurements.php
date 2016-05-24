@@ -45,6 +45,8 @@ class RunMeasurements extends Command
      */
     public function handle()
     {
+        if( $this->isVerbose() ) { $this->info("---- RUN MEASUREMENTS START ----"); }
+
         // find queued measurements:
         foreach( [ 'atlas_out_id', 'atlas_in_id' ] as $id ) {
             if( !( $measurements = Registry::getRepository('Entities\Measurement')->findBy( [$id => null ] ) ) ) {
@@ -58,19 +60,20 @@ class RunMeasurements extends Command
                 $this->process( $m );
             }
         }
+
+        if( $this->isVerbose() ) { $this->info("---- RUN MEASUREMENTS STOP  ----"); }
     }
 
     private function process( Measurement $m ) {
         $getAddress = $m->getRequest()->getProtocol() == 4 ? 'getV4Address' : 'getV6Address';
-        $getASN     = $m->getRequest()->getProtocol() == 4 ? 'getV4asn'     : 'getV6asn';
 
         $sprobe = ($m->getRequest()->getNetwork()->getProbesByProtocol( $m->getRequest()->getProtocol() ))[0];
         $dprobe = ($m->getDestinationNetwork()->getProbesByProtocol($m->getRequest()->getProtocol() ))[0];
 
         $sourceIP = $sprobe->$getAddress();
-        $sourceAS = $m->getRequest()->getNetwork()->$getASN();
+        $sourceAS = $m->getRequest()->getNetwork()->getAsn();
         $targetIP = $dprobe->$getAddress();
-        $targetAS = $dprobe->getNetwork()->$getASN();
+        $targetAS = $dprobe->getNetwork()->getAsn();
 
         if( $this->isVerbose() ) {
             $this->info( "Requesting measurement for {$m->getRequest()->getNetwork()->getName()} / {$m->getDestinationNetwork()->getName()}: {$sourceAS}/{$targetIP} and {$targetAS}/{$sourceIP}" );
@@ -87,24 +90,6 @@ class RunMeasurements extends Command
         }
 
         EntityManager::flush();
-    }
-
-
-    private function getNetworksWithProbes( $ixpid, $protocol, $excludeNetwork = null ) {
-
-        $enabled = $protocol == 4 ? 'v4_enabled' : 'v6_enabled';
-        $asn     = $protocol == 4 ? 'v4asn' : 'v6asn';
-
-        $query = "SELECT n FROM Entities\\Network n
-            LEFT JOIN n.IXP as i
-            LEFT JOIN n.probes as p
-            WHERE i.id = {$ixpid} AND p.{$enabled} = 1 AND n.{$asn} IS NOT NULL";
-
-        if( $excludeNetwork ) {
-            $query .= " AND n.id != " . $excludeNetwork->getId();
-        }
-
-        return EntityManager::createQuery( $query )->getResult();
     }
 
     private function requestAtlasTraceroute( $fromASN, $target, $protocol ) {

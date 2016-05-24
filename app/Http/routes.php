@@ -27,10 +27,12 @@ Route::get('/', function () {
 
             $n['id']      = $network->getId();
             $n['name']    = $network->getName();
-            $n['v4']      = $network->getV4ASN() ? true : false;
-            $n['v6']      = $network->getV6ASN() ? true : false;
-            $n['v4asn']   = $network->getV4ASN();
-            $n['v6asn']   = $network->getV6ASN();
+            $n['asn']     = $network->getAsn();
+
+            // I want to only allow networks with shared protocols at the same exchange
+            $n['v4']      = $network->hasProtocolAtIXP( $ixp, 4 );
+            $n['v6']      = $network->hasProtocolAtIXP( $ixp, 6 );
+
             $i['networks'][] = $n;
         }
 
@@ -40,12 +42,25 @@ Route::get('/', function () {
     return view('index', [ 'ixps' => json_encode( $ixps ) ] );
 });
 
-Route::get('/request/{network_id}/{protocol}/{json?}',function( $network_id, $protocol, $json = false ){
+Route::get('/request/{ixp_id}/{network_id}/{protocol}/{json?}',function( $ixp_id, $network_id, $protocol, $json = false ){
     if( !( $n = Registry::getRepository('Entities\Network')->find( $network_id ) ) ) {
         App::abort(404);
     }
 
+    $ixp = false;
+    foreach( $n->getIXPs() as $i ) {
+        if( $i->getId() == $ixp_id ) {
+            $ixp = $i;
+            break;
+        }
+    }
+
+    if( !$ixp ) {
+        App::abort(404);
+    }
+
     $r = new Entities\Request;
+    $r->setIXP($ixp);
     $r->setNetwork($n);
     $r->setProtocol($protocol);
     $r->setCreated( new Carbon\Carbon );
@@ -61,6 +76,7 @@ Route::get('/request/{network_id}/{protocol}/{json?}',function( $network_id, $pr
     return redirect( '/result/' . $r->getNonce() );
 })
     ->where( [
+        'ixp_id'     => '[0-9]+',
         'network_id' => '[0-9]+',
         'protocol'   => '[46]{1,1}'
     ] );
@@ -80,10 +96,10 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
 
     $obj->snetwork = new stdClass;
     $obj->snetwork->name = $r->getNetwork()->getName();
-    $obj->snetwork->asn  = $r->getNetwork()->getV4ASN();
+    $obj->snetwork->asn  = $r->getNetwork()->getAsn();
 
     $obj->snetwork->ixp = new stdClass;
-    $obj->snetwork->ixp->shortname = $r->getNetwork()->getIXP()->getShortname();
+    $obj->snetwork->ixp->shortname = $r->getIXP()->getShortname();
 
     $obj->measurements = [];
 
@@ -98,7 +114,7 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
 
         $mc->dnetwork = new stdClass;
         $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
-        $mc->dnetwork->asn  = $m->getDestinationNetwork()->getV4ASN();
+        $mc->dnetwork->asn  = $m->getDestinationNetwork()->getAsn();
 
         if( $m->getResult() ) {
             $mc->result = new stdClass;

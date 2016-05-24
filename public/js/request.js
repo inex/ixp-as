@@ -2,7 +2,7 @@
 $( document ).ready( function(){
 
     for( var i=0; i < ixps.length; i++ ) {
-        $('#ixp_select').append( '<option value="' + i + '">' + ixps[i].shortname + '</option>' );
+        $('#ixp_select').append( '<option value="' + ixps[i].id + '">' + ixps[i].shortname + '</option>' );
     }
 
     $('#ixp_select').on( 'change', function(){
@@ -18,7 +18,7 @@ $( document ).ready( function(){
             $('#btn_submit').attr( 'href', '');
             $('#div_submit').hide();
         } else {
-            $('#btn_submit').attr( 'href', url + "/" + $('#network_select').val() + "/" + $('#protocol_select').val() );
+            $('#btn_submit').attr( 'href', url + "/" + $('#ixp_select').val() + "/"+ $('#network_select').val() + "/" + $('#protocol_select').val() );
             $('#div_submit').show();
         }
     });
@@ -52,12 +52,19 @@ function setDropdowns() {
     }
 
     // so we have an IXP and a protocol - populate networks:
-    ixps[ $('#ixp_select').val() ].networks.forEach( function( network ){
+    var ixp;
+    for( var i=0; i < ixps.length; i++ ) {
+        if( ixps[i].id == $('#ixp_select').val() ) {
+            ixp = ixps[i];
+            break;
+        }
+    }
+
+    ixp.networks.forEach( function( network ){
         var index = 'v' + $('#protocol_select').val();
 
         if( network[ index ] ) {
-            index += 'asn';
-            $('#network_select').append( '<option value="' + network.id + '">' + network.name + ' - AS' + network[index] + '</option>' );
+            $('#network_select').append( '<option value="' + network.id + '">' + network.name + ' - AS' + network.asn + '</option>' );
         }
     });
 

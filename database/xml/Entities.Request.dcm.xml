@@ -14,6 +14,11 @@
         <join-column name="network_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
+    <many-to-one field="IXP" target-entity="Entities\IXP" inversed-by="request">
+      <join-columns>
+        <join-column name="ixp_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <one-to-many field="measurements" target-entity="Entities\Measurement" mapped-by="request"/>
   </entity>
 </doctrine-mapping>

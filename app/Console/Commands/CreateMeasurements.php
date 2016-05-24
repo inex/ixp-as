@@ -45,6 +45,8 @@ class CreateMeasurements extends Command
      */
     public function handle()
     {
+        if( $this->isVerbose() ) { $this->info("---- CREATE MEASUREMENTS START ----"); }
+
         // find new requests:
         if( !( $requests = Registry::getRepository('Entities\Request')->findBy( ['started' => null ] ) ) ) {
             if( $this->isVerbose() ) {
@@ -56,15 +58,20 @@ class CreateMeasurements extends Command
         foreach( $requests as $r ) {
             $this->process( $r );
         }
+        if( $this->isVerbose() ) { $this->info("---- CREATE MEASUREMENTS STOP  ----"); }
     }
 
     private function process( Request $r ) {
         // we assume there are origin probes -> otherwise the network is unselectable in the frontend
 
         // find all candidate networks at this IXP. I.e. networks with probes for this protocol
-        $destNetworks = $this->getNetworksWithProbes( $r->getNetwork()->getIXP()->getId(), $r->getProtocol(), $r->getNetwork() );
+        $destNetworks = $this->getNetworksWithProbes( $r->getIXP()->getId(), $r->getProtocol(), $r->getNetwork() );
 
         foreach($destNetworks as $dn) {
+            if( !$dn->hasProtocolAtIXP( $r->getIXP(), $r->getProtocol() ) ) {
+                continue;
+            }
+
             if( $this->isVerbose() ) {
                 $this->info( "Creating measurement for {$r->getNetwork()->getName()} / {$dn->getName()}" );
             }
@@ -83,12 +90,11 @@ class CreateMeasurements extends Command
     private function getNetworksWithProbes( $ixpid, $protocol, $excludeNetwork = null ) {
 
         $enabled = $protocol == 4 ? 'v4_enabled' : 'v6_enabled';
-        $asn     = $protocol == 4 ? 'v4asn' : 'v6asn';
 
         $query = "SELECT n FROM Entities\\Network n
-            LEFT JOIN n.IXP as i
+            LEFT JOIN n.IXPs as i
             LEFT JOIN n.probes as p
-            WHERE i.id = {$ixpid} AND p.{$enabled} = 1 AND n.{$asn} IS NOT NULL";
+            WHERE i.id = {$ixpid} AND p.{$enabled} = 1";
 
         if( $excludeNetwork ) {
             $query .= " AND n.id != " . $excludeNetwork->getId();

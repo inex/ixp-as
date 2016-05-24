@@ -64,10 +64,10 @@ class LAN extends \Entities\LAN implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\LAN' . "\0" . 'name', '' . "\0" . 'Entities\\LAN' . "\0" . 'protocol', '' . "\0" . 'Entities\\LAN' . "\0" . 'subnet', '' . "\0" . 'Entities\\LAN' . "\0" . 'masklen', '' . "\0" . 'Entities\\LAN' . "\0" . 'id', '' . "\0" . 'Entities\\LAN' . "\0" . 'addresses', '' . "\0" . 'Entities\\LAN' . "\0" . 'IXP'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\LAN' . "\0" . 'name', '' . "\0" . 'Entities\\LAN' . "\0" . 'protocol', '' . "\0" . 'Entities\\LAN' . "\0" . 'subnet', '' . "\0" . 'Entities\\LAN' . "\0" . 'masklen', '' . "\0" . 'Entities\\LAN' . "\0" . 'id', '' . "\0" . 'Entities\\LAN' . "\0" . 'addresses', '' . "\0" . 'Entities\\LAN' . "\0" . 'IXP', '' . "\0" . 'Entities\\LAN' . "\0" . 'ixp_vlan_id'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\LAN' . "\0" . 'name', '' . "\0" . 'Entities\\LAN' . "\0" . 'protocol', '' . "\0" . 'Entities\\LAN' . "\0" . 'subnet', '' . "\0" . 'Entities\\LAN' . "\0" . 'masklen', '' . "\0" . 'Entities\\LAN' . "\0" . 'id', '' . "\0" . 'Entities\\LAN' . "\0" . 'addresses', '' . "\0" . 'Entities\\LAN' . "\0" . 'IXP'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\LAN' . "\0" . 'name', '' . "\0" . 'Entities\\LAN' . "\0" . 'protocol', '' . "\0" . 'Entities\\LAN' . "\0" . 'subnet', '' . "\0" . 'Entities\\LAN' . "\0" . 'masklen', '' . "\0" . 'Entities\\LAN' . "\0" . 'id', '' . "\0" . 'Entities\\LAN' . "\0" . 'addresses', '' . "\0" . 'Entities\\LAN' . "\0" . 'IXP', '' . "\0" . 'Entities\\LAN' . "\0" . 'ixp_vlan_id'];
     }
 
     /**
@@ -329,6 +329,28 @@ class LAN extends \Entities\LAN implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIXP', []);
 
         return parent::getIXP();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIxpVlanId($ixpVlanId)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIxpVlanId', [$ixpVlanId]);
+
+        return parent::setIxpVlanId($ixpVlanId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIxpVlanId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIxpVlanId', []);
+
+        return parent::getIxpVlanId();
     }
 
 }

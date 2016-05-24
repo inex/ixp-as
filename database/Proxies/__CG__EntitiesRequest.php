@@ -64,10 +64,10 @@ class Request extends \Entities\Request implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Request' . "\0" . 'nonce', '' . "\0" . 'Entities\\Request' . "\0" . 'protocol', '' . "\0" . 'Entities\\Request' . "\0" . 'created', '' . "\0" . 'Entities\\Request' . "\0" . 'started', '' . "\0" . 'Entities\\Request' . "\0" . 'completed', '' . "\0" . 'Entities\\Request' . "\0" . 'id', '' . "\0" . 'Entities\\Request' . "\0" . 'network', '' . "\0" . 'Entities\\Request' . "\0" . 'measurements'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Request' . "\0" . 'nonce', '' . "\0" . 'Entities\\Request' . "\0" . 'protocol', '' . "\0" . 'Entities\\Request' . "\0" . 'created', '' . "\0" . 'Entities\\Request' . "\0" . 'started', '' . "\0" . 'Entities\\Request' . "\0" . 'completed', '' . "\0" . 'Entities\\Request' . "\0" . 'id', '' . "\0" . 'Entities\\Request' . "\0" . 'network', '' . "\0" . 'Entities\\Request' . "\0" . 'measurements', '' . "\0" . 'Entities\\Request' . "\0" . 'IXP'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Request' . "\0" . 'nonce', '' . "\0" . 'Entities\\Request' . "\0" . 'protocol', '' . "\0" . 'Entities\\Request' . "\0" . 'created', '' . "\0" . 'Entities\\Request' . "\0" . 'started', '' . "\0" . 'Entities\\Request' . "\0" . 'completed', '' . "\0" . 'Entities\\Request' . "\0" . 'id', '' . "\0" . 'Entities\\Request' . "\0" . 'network', '' . "\0" . 'Entities\\Request' . "\0" . 'measurements'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Request' . "\0" . 'nonce', '' . "\0" . 'Entities\\Request' . "\0" . 'protocol', '' . "\0" . 'Entities\\Request' . "\0" . 'created', '' . "\0" . 'Entities\\Request' . "\0" . 'started', '' . "\0" . 'Entities\\Request' . "\0" . 'completed', '' . "\0" . 'Entities\\Request' . "\0" . 'id', '' . "\0" . 'Entities\\Request' . "\0" . 'network', '' . "\0" . 'Entities\\Request' . "\0" . 'measurements', '' . "\0" . 'Entities\\Request' . "\0" . 'IXP'];
     }
 
     /**
@@ -351,6 +351,28 @@ class Request extends \Entities\Request implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMeasurements', []);
 
         return parent::getMeasurements();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIXP(\Entities\IXP $iXP = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIXP', [$iXP]);
+
+        return parent::setIXP($iXP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIXP()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIXP', []);
+
+        return parent::getIXP();
     }
 
 }

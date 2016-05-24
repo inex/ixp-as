@@ -64,10 +64,10 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements', '' . "\0" . 'Entities\\Network' . "\0" . 'IXPs', '' . "\0" . 'Entities\\Network' . "\0" . 'asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v4_available', '' . "\0" . 'Entities\\Network' . "\0" . 'v6_available'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Network' . "\0" . 'name', '' . "\0" . 'Entities\\Network' . "\0" . 'v4asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v6asn', '' . "\0" . 'Entities\\Network' . "\0" . 'id', '' . "\0" . 'Entities\\Network' . "\0" . 'addresses', '' . "\0" . 'Entities\\Network' . "\0" . 'probes', '' . "\0" . 'Entities\\Network' . "\0" . 'requests', '' . "\0" . 'Entities\\Network' . "\0" . 'IXP', '' . "\0" . 'Entities\\Network' . "\0" . 'measurements', '' . "\0" . 'Entities\\Network' . "\0" . 'IXPs', '' . "\0" . 'Entities\\Network' . "\0" . 'asn', '' . "\0" . 'Entities\\Network' . "\0" . 'v4_available', '' . "\0" . 'Entities\\Network' . "\0" . 'v6_available'];
     }
 
     /**
@@ -417,6 +417,105 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProbesByProtocol', [$protocol]);
 
         return parent::getProbesByProtocol($protocol);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addIXP(\Entities\IXP $iXP)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addIXP', [$iXP]);
+
+        return parent::addIXP($iXP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeIXP(\Entities\IXP $iXP)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeIXP', [$iXP]);
+
+        return parent::removeIXP($iXP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIXPs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIXPs', []);
+
+        return parent::getIXPs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAsn($asn)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAsn', [$asn]);
+
+        return parent::setAsn($asn);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAsn()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAsn', []);
+
+        return parent::getAsn();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setV4Available($v4Available)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setV4Available', [$v4Available]);
+
+        return parent::setV4Available($v4Available);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getV4Available()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getV4Available', []);
+
+        return parent::getV4Available();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setV6Available($v6Available)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setV6Available', [$v6Available]);
+
+        return parent::setV6Available($v6Available);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getV6Available()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getV6Available', []);
+
+        return parent::getV6Available();
     }
 
 }

@@ -325,4 +325,148 @@ public function getProbesByProtocol($protocol)
 }
 
 
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $IXPs;
+
+
+/**
+ * Add iXP
+ *
+ * @param \Entities\IXP $iXP
+ *
+ * @return Network
+ */
+public function addIXP(\Entities\IXP $iXP)
+{
+$this->IXPs[] = $iXP;
+
+return $this;
+}
+
+/**
+ * Remove iXP
+ *
+ * @param \Entities\IXP $iXP
+ */
+public function removeIXP(\Entities\IXP $iXP)
+{
+$this->IXPs->removeElement($iXP);
+}
+
+/**
+ * Get iXPs
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getIXPs()
+{
+return $this->IXPs;
+}
+/**
+ * @var integer
+ */
+private $asn;
+
+/**
+ * @var boolean
+ */
+private $v4_available;
+
+/**
+ * @var boolean
+ */
+private $v6_available;
+
+
+/**
+ * Set asn
+ *
+ * @param integer $asn
+ *
+ * @return Network
+ */
+public function setAsn($asn)
+{
+$this->asn = $asn;
+
+return $this;
+}
+
+/**
+ * Get asn
+ *
+ * @return integer
+ */
+public function getAsn()
+{
+return $this->asn;
+}
+
+/**
+ * Set v4Available
+ *
+ * @param boolean $v4Available
+ *
+ * @return Network
+ */
+public function setV4Available($v4Available)
+{
+$this->v4_available = $v4Available;
+
+return $this;
+}
+
+/**
+ * Get v4Available
+ *
+ * @return boolean
+ */
+public function getV4Available()
+{
+return $this->v4_available;
+}
+
+/**
+ * Set v6Available
+ *
+ * @param boolean $v6Available
+ *
+ * @return Network
+ */
+public function setV6Available($v6Available)
+{
+$this->v6_available = $v6Available;
+
+return $this;
+}
+
+/**
+ * Get v6Available
+ *
+ * @return boolean
+ */
+public function getV6Available()
+{
+return $this->v6_available;
+}
+
+    // oh such a fucking hack
+    // FIXME we're killing databases here :-(
+    public function hasProtocolAtIXP( $ixp, $protocol ) {
+        foreach( $this->getAddresses() as $a ) {
+            if( $a->getProtocol() != $protocol ) {
+                continue;
+            }
+
+            if( $a->getLAN()->getIXP()->getId() == $ixp->getId() ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

@@ -5,16 +5,20 @@
       <generator strategy="AUTO"/>
     </id>
     <field name="name" type="string" length="255" nullable="true"/>
-    <field name="v4asn" type="integer" nullable="true"/>
-    <field name="v6asn" type="integer" nullable="true"/>
-    <many-to-one field="IXP" target-entity="Entities\IXP" inversed-by="networks">
-      <join-columns>
-        <join-column name="ixp_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
+    <field name="asn" type="integer" nullable="true"/>
     <one-to-many field="addresses" target-entity="Entities\Address" mapped-by="network"/>
     <one-to-many field="probes" target-entity="Entities\Probe" mapped-by="network"/>
     <one-to-many field="requests" target-entity="Entities\Request" mapped-by="network"/>
     <one-to-many field="measurements" target-entity="Entities\Measurement" mapped-by="destinationNetwork"/>
+    <many-to-many field="IXPs" target-entity="Entities\IXP" inversed-by="networks">
+      <join-table name="ixps_to_networks">
+        <join-columns>
+          <join-column name="network_id" referenced-column-name="id" nullable="false"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="ixp_id" referenced-column-name="id" nullable="false"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
   </entity>
 </doctrine-mapping>

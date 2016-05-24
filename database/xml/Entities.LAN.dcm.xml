@@ -8,6 +8,7 @@
     <field name="protocol" type="integer" nullable="false"/>
     <field name="subnet" type="string" length="64" nullable="false"/>
     <field name="masklen" type="integer" nullable="true"/>
+    <field name="ixp_vlan_id" type="integer" nullable="true"/>
     <many-to-one field="IXP" target-entity="Entities\IXP" inversed-by="LANs">
       <join-columns>
         <join-column name="ixp_id" referenced-column-name="id"/>

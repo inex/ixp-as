@@ -64,10 +64,10 @@ class IXP extends \Entities\IXP implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request'];
     }
 
     /**
@@ -318,6 +318,105 @@ class IXP extends \Entities\IXP implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNetworks', []);
 
         return parent::getNetworks();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreated($created)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreated', [$created]);
+
+        return parent::setCreated($created);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
+
+        return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLastupdated($lastupdated)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastupdated', [$lastupdated]);
+
+        return parent::setLastupdated($lastupdated);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastupdated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastupdated', []);
+
+        return parent::getLastupdated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIxfId($ixfId)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIxfId', [$ixfId]);
+
+        return parent::setIxfId($ixfId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIxfId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIxfId', []);
+
+        return parent::getIxfId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addRequest(\Entities\Request $request)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRequest', [$request]);
+
+        return parent::addRequest($request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeRequest(\Entities\Request $request)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRequest', [$request]);
+
+        return parent::removeRequest($request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRequest()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRequest', []);
+
+        return parent::getRequest();
     }
 
 }

@@ -195,4 +195,130 @@ public function getNetworks()
 {
 return $this->networks;
 }
+/**
+ * @var \DateTime
+ */
+private $created;
+
+/**
+ * @var \DateTime
+ */
+private $lastupdated;
+
+
+/**
+ * Set created
+ *
+ * @param \DateTime $created
+ *
+ * @return IXP
+ */
+public function setCreated($created)
+{
+$this->created = $created;
+
+return $this;
+}
+
+/**
+ * Get created
+ *
+ * @return \DateTime
+ */
+public function getCreated()
+{
+return $this->created;
+}
+
+/**
+ * Set lastupdated
+ *
+ * @param \DateTime $lastupdated
+ *
+ * @return IXP
+ */
+public function setLastupdated($lastupdated)
+{
+$this->lastupdated = $lastupdated;
+
+return $this;
+}
+
+/**
+ * Get lastupdated
+ *
+ * @return \DateTime
+ */
+public function getLastupdated()
+{
+return $this->lastupdated;
+}
+/**
+ * @var integer
+ */
+private $ixf_id;
+
+
+/**
+ * Set ixfId
+ *
+ * @param integer $ixfId
+ *
+ * @return IXP
+ */
+public function setIxfId($ixfId)
+{
+$this->ixf_id = $ixfId;
+
+return $this;
+}
+
+/**
+ * Get ixfId
+ *
+ * @return integer
+ */
+public function getIxfId()
+{
+return $this->ixf_id;
+}
+/**
+ * @var \Doctrine\Common\Collections\Collection
+ */
+private $request;
+
+
+/**
+ * Add request
+ *
+ * @param \Entities\Request $request
+ *
+ * @return IXP
+ */
+public function addRequest(\Entities\Request $request)
+{
+$this->request[] = $request;
+
+return $this;
+}
+
+/**
+ * Remove request
+ *
+ * @param \Entities\Request $request
+ */
+public function removeRequest(\Entities\Request $request)
+{
+$this->request->removeElement($request);
+}
+
+/**
+ * Get request
+ *
+ * @return \Doctrine\Common\Collections\Collection
+ */
+public function getRequest()
+{
+return $this->request;
+}
 }
