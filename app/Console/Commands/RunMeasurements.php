@@ -67,8 +67,10 @@ class RunMeasurements extends Command
     private function process( Measurement $m ) {
         $getAddress = $m->getRequest()->getProtocol() == 4 ? 'getV4Address' : 'getV6Address';
 
-        $sprobe = ($m->getRequest()->getNetwork()->getProbesByProtocol( $m->getRequest()->getProtocol() ))[0];
-        $dprobe = ($m->getDestinationNetwork()->getProbesByProtocol($m->getRequest()->getProtocol() ))[0];
+        $sprobe = $m->getRequest()->getNetwork()->getProbesByProtocol( $m->getRequest()->getProtocol() );
+        $sprobe = $sprobe[0];
+        $dprobe = $m->getDestinationNetwork()->getProbesByProtocol($m->getRequest()->getProtocol() );
+        $dprobe = $dprobe[0];
 
         $sourceIP = $sprobe->$getAddress();
         $sourceAS = $m->getRequest()->getNetwork()->getAsn();
