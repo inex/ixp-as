@@ -113,7 +113,7 @@ class Basic
      * @param int $p The protocol
      * @return array Array of addresses
      */
-    private function getAddressesFromNetwork( IXP $ixp, Network $n, int $p ) {
+    private function getAddressesFromNetwork( IXP $ixp, Network $n, $p ) {
         $addrs = [];
         foreach( $n->getAddresses() as $a ) {
             if( $a->getProtocol() != $p ) {
