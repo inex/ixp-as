@@ -13,7 +13,8 @@
             <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="{{ URL::to('/') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ URL::to('/') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ URL::to('/history') }}">History</a></li>
                     <li role="presentation"><a href="https://github.com/inex/ixp-as">GitHib</a></li>
                 </ul>
             </nav>
@@ -39,6 +40,6 @@
         <script src="{{ URL::asset('bower_components/react/react-dom.min.js' ) }}"></script>
 
         @yield('scripts')
-        
+
     </body>
 </html>

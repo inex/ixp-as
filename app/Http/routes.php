@@ -140,3 +140,8 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     return view('result', [ 'request' => $obj, 'nonce' => $nonce ] );
 })
     ->where( ['nonce' => '[\d]+\-[\w]{8,8}-[\w]{8,8}-[\w]{8,8}'] );
+
+Route::get('/history', function () {
+    // populate array of historical requests
+    return view('history', [ 'requests' => Registry::getRepository('Entities\Request')->findBy([], ['created' => 'DESC']) ] );
+});
