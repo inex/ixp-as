@@ -13,8 +13,12 @@
             <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="{{ URL::to('/') }}">Home</a></li>
-                    <li role="presentation"><a href="{{ URL::to('/history') }}">History</a></li>
+                    <li role="presentation"
+                            @if (Request::is("/")) class="active" @endif
+                        ><a href="{{ URL::to('/') }}">Home</a></li>
+                    <li role="presentation"
+                            @if (Request::is("history")) class="active" @endif
+                        ><a href="{{ URL::to('/history') }}">History</a></li>
                     <li role="presentation"><a href="https://github.com/inex/ixp-as">GitHub</a></li>
                 </ul>
             </nav>
