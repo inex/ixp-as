@@ -15,7 +15,7 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="{{ URL::to('/') }}">Home</a></li>
                     <li role="presentation"><a href="{{ URL::to('/history') }}">History</a></li>
-                    <li role="presentation"><a href="https://github.com/inex/ixp-as">GitHib</a></li>
+                    <li role="presentation"><a href="https://github.com/inex/ixp-as">GitHub</a></li>
                 </ul>
             </nav>
             <h3 class="text-muted">Asymmetric Routing Detector</h3>

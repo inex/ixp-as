@@ -17,6 +17,7 @@
 <ul>
     <li> the IXP must have a publically accessible <a href="https://github.com/euro-ix/json-schemas">JSON export</a>; </li>
     <li> the IXP member / customer must have at least one public RIPE Atlas probe within their directly connected ASN (on a per protocol basis) </li>
+    <li> do you want to get your IXP added? Open a issue on <a href="https://github.com/inex/ixp-as">GitHub</a> with your JSON export URL. Or contact barry.odonovan (at) inex (dot) ie
 </ul>
 
 <h3>Create a Detection Request</h3>
