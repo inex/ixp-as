@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+function generateIXPData() {
     // populate array of IXPs -> Networks
     $ixps = [];
     foreach( Registry::getRepository('Entities\IXP')->findAll() as $ixp ) {
@@ -38,9 +38,17 @@ Route::get('/', function () {
 
         $ixps[] = $i;
     }
+    return $ixps;
+}
 
-    return view('index', [ 'ixps' => json_encode( $ixps ) ] );
+Route::get('/', function () {
+    return view('index', [ 'ixps' => json_encode( generateIXPData() ) ] );
 });
+
+Route::get('/json', function () {
+    return response()->json( generateIXPData() );
+});
+
 
 Route::get('/request/{ixp_id}/{network_id}/{protocol}/{json?}',function( $ixp_id, $network_id, $protocol, $json = false ){
     if( !( $n = Registry::getRepository('Entities\Network')->find( $network_id ) ) ) {
