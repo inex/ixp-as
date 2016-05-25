@@ -63,11 +63,19 @@ class CompleteRequests extends Command
     }
 
     private function process( Request $r ) {
+        $count = 0;
         foreach( $r->getMeasurements() as $m ) {
+            $count++;
             if( !$m->getAtlasInStop() || !$m->getAtlasOutStop() ) {
                 return;
             }
         }
+
+        if( $count == 0 ) {
+            // no measurements - just get out of here
+            return;
+        }
+
 
         // otherwise all measurements complete, set request as complete
         if( $this->isVerbose() ) {
