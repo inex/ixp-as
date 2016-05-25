@@ -2,6 +2,13 @@
 
 @section('content')
 
+@if (session('duplicate'))
+    <div class="alert alert-danger">
+        A new request was not created as there is an open request for the same IXP / network / protocol
+        and the current results for this are below.
+    </div>
+@endif
+
 <h1>
     Request:
     <small>#<a href="{{ URL::to( '/result' ) . '/' . $nonce }}">{{ $nonce}}</a></small>

@@ -67,6 +67,19 @@ Route::get('/request/{ixp_id}/{network_id}/{protocol}/{json?}',function( $ixp_id
         App::abort(404);
     }
 
+    // let's rate limit these a little
+    $existing = Registry::getRepository('Entities\Request')->findOneBy(
+            [ 'IXP' => $ixp, 'network' => $n, 'protocol' => $protocol, 'completed' => null ]
+        );
+
+    if( $existing ) {
+        if( $json ) {
+            return response()->json( ['request_nonce' => $existing->getNonce()] );
+        } else {
+            return redirect( '/result/' . $existing->getNonce() )->with('duplicate',true);
+        }
+    }
+
     $r = new Entities\Request;
     $r->setIXP($ixp);
     $r->setNetwork($n);
