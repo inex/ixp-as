@@ -37,6 +37,15 @@ The application is mostly async with the frontend requests just storing rows in 
 * ``atlas:complete-requests``: marks end user requests as complete if all measurements have completed.
 * ``atlas:stop-all-measurements``: Sledge hammer to delete all outstanding RIPE Atlas measurements created with the configured Atlas key.
 
+## Caveats
+
+**This is the fruit of a hackaton! Expect bugs, non-defensive programming, databases definitely harmed.**
+
+* RIPE Atlas allows a max of 10 measurements towards any one probe at a time. As such, larger requests will take longer to run (finger in the air guesstimate: 5mins per batch of 10).
+* Any measurement that hasn't returned in 60mins is considered failed.
+* Routing over two LANs at a single exchange is currently considered symmetric. It nearly is anyway :wink:
+
+
 
 ## Installation
 
