@@ -50,7 +50,7 @@ class UpdateProbes extends Command
 
                 // fn names for later:
                 $fnGet = "getV{$protocol}Enabled";
-                $fnSet = "getV{$protocol}Enabled";
+                $fnSet = "setV{$protocol}Enabled";
                 $fnIpSet = "setV{$protocol}Address";
 
                 if( $probes === false ) {
@@ -73,28 +73,48 @@ class UpdateProbes extends Command
                     foreach( $probes->results as $probe ) {
                         foreach( $network->getProbes() as $p ) {
                             if( $p->getAtlasId() == $probe->id ) {
-                                if( !$p->$fnGet() ) {
-                                    $p->$fnSet( true );
-                                    $key = 'address_v' . $protocol;
-                                    $p->fnIpSet( $probe->$key );
-                                    $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
-                                }
-                                continue 2;
+                                break;
                             }
                         }
 
-                        // probe not in database
-                        $p = new Probe;
-                        $p->setNetwork( $network );
-                        $p->setAtlasId( $probe->id );
-                        $p->setV4Enabled( $probe->address_v4 != null );
-                        $p->setV4Address( $probe->address_v4 );
-                        $p->setV6Enabled( $probe->address_v6 != null );
-                        $p->setV6Address( $probe->address_v6 );
-                        EntityManager::persist( $p );
-                        $this->info("Added probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
-                    }
-                }
+                        if( $p->getAtlasId() != $probe->id ) {
+                            // probe not in database
+                            $p = new Probe;
+                            $p->setNetwork( $network );
+                            $p->setAtlasId( $probe->id );
+
+                            // default to no support
+                            $p->setV4Enabled( false );
+                            $p->setV6Enabled( false );
+
+                            EntityManager::persist( $p );
+
+                            $this->info("Adding probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
+                        }
+
+                        // record status before we change it
+                        $old = $p->$fnGet();
+
+                        // so we have a probe that we found by searching the V6 ASN. Let's say v6 is supported unless
+                        // we later find otherwise.
+                        $p->$fnSet( true );
+                        $key = 'address_v' . $protocol;
+                        $p->$fnIpSet( $probe->$key );
+
+                        // now make sure it /really/ works
+                        foreach( $probe->tags as $tag ) {
+                            if( $tag->slug == "system-ipv{$protocol}-doesnt-work" ) {
+                                $p->$fnSet( false );
+                                break;
+                            }
+                        }
+
+                        if( $old != $p->$fnGet() ) {
+                            $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
+                        }
+                    } // foreach found probe
+
+                } // if have probes
             } // protocols
 
             EntityManager::flush();
