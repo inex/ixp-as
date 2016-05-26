@@ -19,7 +19,6 @@ function showJSON( id ) {
     $('#modal-json').modal('hide');
 
     body = function( data ) {
-        alert(data);
         if( data == "null" ) {
             return "<p>No data available yet...</p>";
         } else {
