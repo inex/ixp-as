@@ -136,6 +136,11 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
         $mc->dnetwork->name = $m->getDestinationNetwork()->getName();
         $mc->dnetwork->asn  = $m->getDestinationNetwork()->getAsn();
 
+        $mc->atlas_out_data         = json_encode( json_decode( $m->getAtlasOutData()        ), JSON_PRETTY_PRINT );
+        $mc->atlas_in_data          = json_encode( json_decode( $m->getAtlasInData()         ), JSON_PRETTY_PRINT );
+        $mc->atlas_out_request_data = json_encode( json_decode( $m->getAtlasOutRequestData() ), JSON_PRETTY_PRINT );
+        $mc->atlas_in_request_data  = json_encode( json_decode( $m->getAtlasInRequestData()  ), JSON_PRETTY_PRINT );
+
         if( $m->getResult() ) {
             $mc->result = new stdClass;
             $mc->result->routing  = $m->getResult()->getRouting();
@@ -145,19 +150,20 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
             $mc->result = null;
         }
 
-        $obj->measurements[] = $mc;
+        $obj->measurements[$mc->id] = $mc;
     }
+
+    // rewrite dates to JS
+    $jobj = clone $obj;
+    $jobj->created   = Carbon\Carbon::instance( $r->getCreated() )->toATOMString() . 'Z';
+    $jobj->started   = $r->getStarted()   ? Carbon\Carbon::instance( $r->getStarted()   )->toATOMString()   . 'Z' : false;
+    $jobj->completed = $r->getCompleted() ? Carbon\Carbon::instance( $r->getCompleted() )->toATOMString() . 'Z' : false;
 
     if( strtolower( $json ) == 'json' ) {
-        // rewrite dates to JS
-        $obj->created   = Carbon\Carbon::instance( $r->getCreated() )->toATOMString() . 'Z';
-        $obj->started   = $r->getStarted()   ? Carbon\Carbon::instance( $r->getStarted()   )->toATOMString()   . 'Z' : false;
-        $obj->completed = $r->getCompleted() ? Carbon\Carbon::instance( $r->getCompleted() )->toATOMString() . 'Z' : false;
-
-        return response()->json( $obj );
+        return response()->json( $jobj );
     }
 
-    return view('result', [ 'request' => $obj, 'nonce' => $nonce ] );
+    return view('result', [ 'request' => $obj, 'json' => json_encode( $jobj ), 'nonce' => $nonce ] );
 })
     ->where( ['nonce' => '[\d]+\-[\w]{8,8}-[\w]{8,8}-[\w]{8,8}'] );
 

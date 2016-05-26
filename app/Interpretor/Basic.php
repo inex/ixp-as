@@ -73,15 +73,26 @@ class Basic
     private function parsePath( array $tracert ) {
         $path = [];
 
-        foreach( $tracert[0]->result as $e ) {
-            foreach( $e->result as $hop ) {
-                if( !isset( $hop->from ) ) {
+        foreach( $tracert[0]->result as $hop ) {
+            // three itrations means each hop has three results:
+            $results = [];
+            foreach( $hop->result as $result ) {
+
+                if( !isset( $result->from ) ) {
                     continue;
                 }
 
-                // assuming every hop is the same (e.g. no ECMP)
-                $path[] = $hop->from;
-                break;
+                if( in_array( $result->from, $results ) ) {
+                    continue;
+                }
+
+                $results[] = $result->from;
+            }
+
+            if( count($results) ) {
+                $path[] = $results;
+            } else {
+                $path[] = [ '*' ];
             }
         }
 
@@ -96,10 +107,11 @@ class Basic
      * @return bool
      */
     private function queryPassesThrough( array $path, array $addrs ) {
-
-        foreach( $path as $ip ) {
-            if( in_array( $ip, $addrs ) ) {
-                return true;
+        foreach( $path as $ipset ) {
+            foreach( $ipset as $ip ) {
+                if( in_array( $ip, $addrs ) ) {
+                    return true;
+                }
             }
         }
 

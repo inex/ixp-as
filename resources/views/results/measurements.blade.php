@@ -38,30 +38,43 @@
       </div>
       <div id="collapse-{{$m->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{$m->id}}">
         <div class="panel-body">
+
+
+            <div class="row">
+              <div class="col-md-12">
+                  <p>
+                      View Atlas JSON:
+                      <span class="label label-primary" id="atlas-json-requestout-{{$m->id}}" data-measid="{{$m->id}}">
+                          Outbound Status
+                      </span>
+                      &nbsp;
+                      <span class="label label-primary" id="atlas-json-responseout-{{$m->id}}" data-measid="{{$m->id}}">
+                          Outbound Response
+                      </span>
+                      &nbsp;
+                      <span class="label label-primary" id="atlas-json-requestin-{{$m->id}}" data-measid="{{$m->id}}">
+                          Inbound Status
+                      </span>
+                      &nbsp;
+                      <span class="label label-primary" id="atlas-json-responsein-{{$m->id}}" data-measid="{{$m->id}}">
+                          Inbound Response
+                      </span>
+                  </p>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-md-6">
                   <h4>Trace Out: AS{{$request->snetwork->asn}} to AS{{ $m->dnetwork->asn}}<h4>
-
-                  <ul>
-                      @if ( isset($m->result->path_out) )
-                          @foreach ( $m->result->path_out as $hop )
-                            <li> {{ $hop }} </li>
-                          @endforeach
-                      @endif
-                  </ul>
-
+                  @if ( isset($m->result->path_out) )
+                    @include('results.measurements-path', ['path' => $m->result->path_out])
+                  @endif
               </div>
               <div class="col-md-6">
                   <h4>Trace In: AS{{ $m->dnetwork->asn}} to AS{{$request->snetwork->asn}}<h4>
-
-                  <ul>
-                      @if ( isset($m->result->path_in) )
-                          @foreach ( $m->result->path_in as $hop )
-                            <li> {{ $hop }} </li>
-                          @endforeach
-                      @endif
-                  </ul>
-
+                  @if ( isset($m->result->path_in) )
+                    @include('results.measurements-path', ['path' => $m->result->path_in])
+                  @endif
               </div>
             </div>
         </div>
