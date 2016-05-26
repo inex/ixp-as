@@ -2,7 +2,11 @@
 <ul>
   @foreach ( $path as $h )
     <li>
-        {{implode(',',$h)}}
+        @if (is_array($h))
+            {{implode(',',$h)}}
+        @else
+            {{$h}}
+        @endif
     </li>
   @endforeach
 </ul>
