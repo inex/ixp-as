@@ -329,5 +329,19 @@ return $this->asn;
         return false;
     }
 
+    // oh such a fucking hack
+    // FIXME we're killing databases here :-(
+    public function hasProbeProtocol(  $protocol ) {
+        $fnEnabled = "getV{$protocol}Enabled";
+
+        foreach( $this->getProbes() as $p ) {
+            if( $p->$fnEnabled() ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }

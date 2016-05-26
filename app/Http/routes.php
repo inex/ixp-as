@@ -29,9 +29,8 @@ function generateIXPData() {
             $n['name']    = $network->getName();
             $n['asn']     = $network->getAsn();
 
-            // I want to only allow networks with shared protocols at the same exchange
-            $n['v4']      = $network->hasProtocolAtIXP( $ixp, 4 );
-            $n['v6']      = $network->hasProtocolAtIXP( $ixp, 6 );
+            $n['v4']      = $network->hasProbeProtocol( 4 );
+            $n['v6']      = $network->hasProbeProtocol( 6 );
 
             $i['networks'][] = $n;
         }
