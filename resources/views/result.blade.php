@@ -41,7 +41,7 @@
 <h2>
     Results for:
         {{ $request->snetwork->name }} (AS{{$request->snetwork->asn}})
-        @ {{ $request->snetwork->ixp->shortname }}
+        @ {{ $request->ixp->shortname }}
         (IPv{{ $request->protocol }})
 </h2>
 

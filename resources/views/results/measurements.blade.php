@@ -24,7 +24,7 @@
                 @elseif ( $m->result->routing == 'IXP_ASYM_IN' )
                     <span class="label label-danger pull-right">ASYMMETRIC IN</span>
                 @elseif ( $m->result->routing == 'NON_IXP' )
-                    <span class="label label-info pull-right">NON IXP</span>
+                    <span class="label label-info pull-right">NOT {{$request->ixp->shortname}}</span>
                 @else
                     <span class="label label-primary pull-right">WTF?</span>
                 @endif

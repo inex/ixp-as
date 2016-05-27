@@ -114,12 +114,13 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     $obj->started   = $r->getStarted();
     $obj->completed = $r->getCompleted();
 
+    $obj->ixp            = new stdClass;
+    $obj->ixp->name      = $r->getIXP()->getName();
+    $obj->ixp->shortname = $r->getIXP()->getShortname();
+
     $obj->snetwork = new stdClass;
     $obj->snetwork->name = $r->getNetwork()->getName();
     $obj->snetwork->asn  = $r->getNetwork()->getAsn();
-
-    $obj->snetwork->ixp = new stdClass;
-    $obj->snetwork->ixp->shortname = $r->getIXP()->getShortname();
 
     $obj->measurements = [];
 
