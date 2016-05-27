@@ -184,11 +184,17 @@ Route::get('/whois/{ip}', function( $ip ) {
     $obj->error = true;
 
     if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
-        list($obj->asn,$obj->prefix,$obj->cc,$obj->rir,$obj->date) = explode( ' | ', $lu[0]['txt'] );
+        $data = explode( ' | ', $lu[0]['txt'] );
+        $obj->asn    = isset( $data[0] ) ? $data[0] : '??';
+        $obj->prefix = isset( $data[1] ) ? $data[1] : '??';
+        $obj->cc     = isset( $data[2] ) ? $data[2] : '??';
+        $obj->rir    = isset( $data[3] ) ? $data[3] : '??';
+        $obj->date   = isset( $data[4] ) ? $data[4] : '??';
 
         $host = "AS{$obj->asn}.asn.cymru.com";
         if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
-            $obj->lir = explode(' | ',$lu[0]['txt'])[4];
+            $data = explode(' | ',$lu[0]['txt']);
+            $obj->lir = isset( $data[4] ) ? $data[4] : '??';
         } else {
             $obj->lir = "** UNKNOWN **";
         }
