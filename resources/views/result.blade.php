@@ -86,6 +86,7 @@
 @section('scripts')
 <script>
     var results = {!! $json !!};
+    var whois  = "{!! URL::to('/whois') !!}";
 </script>
 
 <script src="{{ URL::asset('js/result.js' ) }}"></script>

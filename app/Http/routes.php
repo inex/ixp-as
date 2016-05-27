@@ -172,3 +172,44 @@ Route::get('/history', function () {
     // populate array of historical requests
     return view('history', [ 'requests' => Registry::getRepository('Entities\Request')->findBy([], ['created' => 'DESC']) ] );
 });
+
+Route::get('/whois/{ip}', function( $ip ) {
+    if( strpos( $ip, '.' ) ) {
+        $host = reverseIPv4($ip);
+    } else {
+        $host = ipv6ToNibble($ip);
+    }
+
+    $obj = new stdClass;
+    $obj->error = true;
+
+    if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
+        list($obj->asn,$obj->prefix,$obj->cc,$obj->rir,$obj->date) = explode( ' | ', $lu[0]['txt'] );
+
+        $host = "AS{$obj->asn}.asn.cymru.com";
+        if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
+            $obj->lir = explode(' | ',$lu[0]['txt'])[4];
+        } else {
+            $obj->lir = "** UNKNOWN **";
+        }
+        $obj->error = false;
+
+    }
+    return response()->json( $obj );
+})
+    ->where( [
+        'ip'         => '[0-9a-f\.:]+'
+    ] );
+
+
+function ipv6ToNibble($ipv6) {
+    $addr = inet_pton($ipv6);
+    $unpack = unpack('H*hex', $addr);
+    $hex = $unpack['hex'];
+    return implode('.', array_reverse(str_split($hex))) . '.origin6.asn.cymru.com.';
+}
+
+function reverseIPv4($ipv4) {
+    list( $a, $b, $c, $d ) = explode( '.', $ipv4 );
+    return "{$d}.{$c}.{$b}.{$a}.origin.asn.cymru.com.";
+}

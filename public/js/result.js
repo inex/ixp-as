@@ -1,12 +1,12 @@
 
 $( document ).ready( function(){
 
-    // $( "span[id|='atlas-json']" ).each( function(e) {
-    //     //alert( $(this).attr('id').substring(11) );
-    // });
-
     $( "span[id|='atlas-json']" ).css('cursor', 'pointer').on( 'click', function() {
         showJSON( $(this).attr('id') );
+    });
+
+    $( "span[id|='ip-address']" ).css('cursor', 'pointer').on( 'click', function() {
+        showAsnInfo( $(this).attr('id') );
     });
 
 });
@@ -51,5 +51,35 @@ function showJSON( id ) {
     }
 
     $('#modal-json').modal('show');
+
+}
+
+function showAsnInfo( id ) {
+    $("span[id|='ip-address']").popover('hide');
+    $("span[id|='ip-address']").popover('destroy');
+
+    ip = $('#'+id).html();
+    var jqxhr = $.getJSON( whois + "/" + ip, function() {
+          console.log( "Sending whois request for: " + ip );
+        })
+        .done(function(data) {
+            $('#'+id).popover({'content': formatWhois(data), 'html': true });
+        })
+        .fail(function() {
+            $('#'+id).popover({'content':"Could not perform whois query"});
+        })
+        .always(function() {
+            $('#'+id).popover('show');
+        });
+}
+
+function formatWhois(d) {
+
+    return "<strong>ASN:</strong>&nbsp" + d.asn + "<br>" +
+        "<strong>LIR:</strong>&nbsp" + d.lir + "<br>" +
+         "<strong>Prefix:</strong>&nbsp" + d.prefix + "<br>" +
+         "<strong>RIR:</strong>&nbsp" + d.rir + "<br>" +
+         "<strong>Date:</strong>&nbsp" + d.date;
+
 
 }

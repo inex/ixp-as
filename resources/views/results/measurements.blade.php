@@ -67,13 +67,13 @@
               <div class="col-md-6">
                   <h4>Trace Out: AS{{$request->snetwork->asn}} to AS{{ $m->dnetwork->asn}}<h4>
                   @if ( isset($m->result->path_out) )
-                    @include('results.measurements-path', ['path' => $m->result->path_out])
+                    @include('results.measurements-path', ['path' => $m->result->path_out, 'dir' => 'out'])
                   @endif
               </div>
               <div class="col-md-6">
                   <h4>Trace In: AS{{ $m->dnetwork->asn}} to AS{{$request->snetwork->asn}}<h4>
                   @if ( isset($m->result->path_in) )
-                    @include('results.measurements-path', ['path' => $m->result->path_in])
+                    @include('results.measurements-path', ['path' => $m->result->path_in, 'dir' => 'in'])
                   @endif
               </div>
             </div>
