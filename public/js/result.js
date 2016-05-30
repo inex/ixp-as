@@ -5,9 +5,11 @@ $( document ).ready( function(){
         showJSON( $(this).attr('id') );
     });
 
-    $( "span[id|='ip-address']" ).css('cursor', 'pointer').on( 'click', function() {
-        showAsnInfo( $(this).attr('id') );
-    });
+    $( "span[id|='ip-address']" ).css('cursor', 'pointer')
+        .css('border-bottom', '1px dotted #000' )
+        .on( 'click', function() {
+            showAsnInfo( $(this).attr('id') );
+        });
 
 });
 

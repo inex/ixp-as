@@ -6,6 +6,7 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('bower_components/bootstrap/dist/css/bootstrap.min.css' ) }}">
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jumbonarrow.css' ) }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/ard.css' ) }}">
     </head>
     <body>
 

@@ -1,7 +1,7 @@
 <?php $counter = 0; ?>
 <ul>
   @foreach ( $path as $h )
-    <li>
+    <li class="ip-address-li">
         @if (is_array($h))
             @foreach ($h as $i)
                 @if ($i == "*")

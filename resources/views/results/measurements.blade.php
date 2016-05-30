@@ -44,19 +44,19 @@
               <div class="col-md-12">
                   <p>
                       View Atlas JSON:
-                      <span class="label label-primary" id="atlas-json-requestout-{{$m->id}}" data-measid="{{$m->id}}">
+                      <span class="btn btn-primary btn-xs" id="atlas-json-requestout-{{$m->id}}" data-measid="{{$m->id}}">
                           Outbound Status
                       </span>
                       &nbsp;
-                      <span class="label label-primary" id="atlas-json-responseout-{{$m->id}}" data-measid="{{$m->id}}">
+                      <span class="btn btn-primary btn-xs" id="atlas-json-responseout-{{$m->id}}" data-measid="{{$m->id}}">
                           Outbound Response
                       </span>
                       &nbsp;
-                      <span class="label label-primary" id="atlas-json-requestin-{{$m->id}}" data-measid="{{$m->id}}">
+                      <span class="btn btn-primary btn-xs" id="atlas-json-requestin-{{$m->id}}" data-measid="{{$m->id}}">
                           Inbound Status
                       </span>
                       &nbsp;
-                      <span class="label label-primary" id="atlas-json-responsein-{{$m->id}}" data-measid="{{$m->id}}">
+                      <span class="btn btn-primary btn-xs" id="atlas-json-responsein-{{$m->id}}" data-measid="{{$m->id}}">
                           Inbound Response
                       </span>
                   </p>
@@ -77,6 +77,13 @@
                   @endif
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <p>
+                      <br><em>Hint: click on IP addresses for origin ASN, network details, etc.</em>
+                  </p>
+              </div>
+          </div>
         </div>
       </div>
     </div>
