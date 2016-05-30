@@ -183,24 +183,28 @@ Route::get('/whois/{ip}', function( $ip ) {
     $obj = new stdClass;
     $obj->error = true;
 
-    if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
-        $data = explode( ' | ', $lu[0]['txt'] );
-        $obj->asn    = isset( $data[0] ) ? $data[0] : '??';
-        $obj->prefix = isset( $data[1] ) ? $data[1] : '??';
-        $obj->cc     = isset( $data[2] ) ? $data[2] : '??';
-        $obj->rir    = isset( $data[3] ) ? $data[3] : '??';
-        $obj->date   = isset( $data[4] ) ? $data[4] : '??';
-
-        $host = "AS{$obj->asn}.asn.cymru.com";
+    try {
         if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
-            $data = explode(' | ',$lu[0]['txt']);
-            $obj->lir = isset( $data[4] ) ? $data[4] : '??';
-        } else {
-            $obj->lir = "** UNKNOWN **";
-        }
-        $obj->error = false;
+            $data = explode( ' | ', $lu[0]['txt'] );
+            $obj->asn    = isset( $data[0] ) ? $data[0] : '??';
+            $obj->prefix = isset( $data[1] ) ? $data[1] : '??';
+            $obj->cc     = isset( $data[2] ) ? $data[2] : '??';
+            $obj->rir    = isset( $data[3] ) ? $data[3] : '??';
+            $obj->date   = isset( $data[4] ) ? $data[4] : '??';
 
+            $host = "AS{$obj->asn}.asn.cymru.com";
+            if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
+                $data = explode(' | ',$lu[0]['txt']);
+                $obj->lir = isset( $data[4] ) ? $data[4] : '??';
+            } else {
+                $obj->lir = "** UNKNOWN **";
+            }
+            $obj->error = false;
+        }
+    } catch( \Exception $e ) {
+        // dns query failed - ignore as $obj->error pre-emptivily set to false
     }
+    
     return response()->json( $obj );
 })
     ->where( [
