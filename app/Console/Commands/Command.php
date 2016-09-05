@@ -14,7 +14,7 @@ class Command extends LaravelCommand
 
     protected function atlasStopMeasurement( $id ) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://atlas.ripe.net/api/v1/measurement/" . $id . "/?key=" . env('ATLAS_STOP_MEASUREMENT_KEY') );
+        curl_setopt($ch, CURLOPT_URL, "https://atlas.ripe.net/api/v2/measurement/" . $id . "/?key=" . env('ATLAS_STOP_MEASUREMENT_KEY') );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);

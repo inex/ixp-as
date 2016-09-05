@@ -69,7 +69,7 @@ class UpdateMeasurements extends Command
             $this->info( 'Checking result for measurement ' . $m->$getAtlasIdFn() );
         }
 
-        $m->$setAtlasRequestDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() ) );
+        $m->$setAtlasRequestDataFn( file_get_contents( "https://atlas.ripe.net/api/v2/measurement/" . $m->$getAtlasIdFn() ) );
         $measurement = json_decode( $m->$getAtlasRequestDataFn() );
 
         if( isset( $measurement->status->name ) ) {
@@ -77,7 +77,7 @@ class UpdateMeasurements extends Command
 
             if( $measurement->status->name == "Stopped" ) {
                 $m->$setAtlasStoppedFn( new Carbon() );
-                $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v1/measurement/" . $m->$getAtlasIdFn() . '/result' ) );
+                $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v2/measurement/" . $m->$getAtlasIdFn() . '/result' ) );
             } else if( in_array( $measurement->status->name, [ "Failed", "No suitable probes" ] ) ) {
                 $m->$setAtlasStoppedFn( new Carbon() );
             }
