@@ -95,7 +95,7 @@ class RunMeasurements extends Command
     }
 
     private function requestAtlasTraceroute( $fromASN, $target, $protocol ) {
-        $uri = 'https://atlas.ripe.net/api/v2/measurement/?key=' . env('ATLAS_CREATE_MEASUREMENT_KEY');
+        $uri = 'https://atlas.ripe.net/api/v2/measurements/?key=' . env('ATLAS_CREATE_MEASUREMENT_KEY');
 
         $query = [
             'definitions' => [ [

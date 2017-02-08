@@ -68,7 +68,6 @@ class UpdateProbes extends Command
                         }
                     }
                 } else {
-
                     // have probes -> update/insert
                     foreach( $probes->results as $probe ) {
                         foreach( $network->getProbes() as $p ) {
@@ -77,7 +76,7 @@ class UpdateProbes extends Command
                             }
                         }
 
-                        if( $p->getAtlasId() != $probe->id ) {
+                        if( !isset( $p ) || $p->getAtlasId() != $probe->id ) {
                             // probe not in database
                             $p = new Probe;
                             $p->setNetwork( $network );

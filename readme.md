@@ -89,7 +89,7 @@ This project uses the standard PHP stack and requires PHP >= 5.6, MySQL/MariaDB,
 7. Create the database schema:
 
     ``
-    php artisan orm:schema:create
+    php artisan doctrine:schema:create
     ``
 
 8. Add IXPs to ``config/ixps.php``
