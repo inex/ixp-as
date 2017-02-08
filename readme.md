@@ -3,7 +3,7 @@
 A tool to detect asymmetric routing over IXPs using bi-directional traceroutes from
 [RIPE Atlas](https://atlas.ripe.net/) probes.
 
-Live version: http://ard.inex.ie/
+Live version: https://www.inex.ie/ard/
 
 This is a project of the [RIPE Atlas Interface Hackaton](https://atlas.ripe.net/hackathon/Interface/) just prior
 to [RIPE72](https://ripe72.ripe.net/) in Copenhagen, Denmark.
