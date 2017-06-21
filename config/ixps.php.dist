@@ -3,8 +3,8 @@
 return [
 
     [
-        'name'      => "INEX, Ireland - LAN1",
-        'shortname' => 'INEX LAN1',
+        'name'      => "INEX",
+        'shortname' => 'INEX',
         'country'   => 'IE',
         'schema'    => "https://www.inex.ie/ixp/api/v4/member-export/ixf/0.6"
     ],

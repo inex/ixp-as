@@ -129,17 +129,30 @@ class UpdateIXPs extends Command
                 }
             }
 
-            if( !$joinedToIXP ) {
+            // should it be?
+            $shouldBeJoinedToIXP = false;
+            foreach( $member->connection_list as $cl ) {
+                if( $cl->ixp_id == $ixp->schemaId ) {
+                    $shouldBeJoinedToIXP = true;
+                    break;
+                }
+            }
+
+            if( !$joinedToIXP && $shouldBeJoinedToIXP ) {
                 $this->info("  - {Network $member->name} does not exist in IXP -> adding");
                 $ixe->addNetwork($me);
                 $me->addIXP($ixe);
+            } else if( $joinedToIXP && !$shouldBeJoinedToIXP ) {
+                $this->info("  - {Network $member->name} exists in IXP but shouldn't -> removing");
+                $ixe->removeNetwork($me);
+                $me->removeIXP($ixe);
             }
 
             $me->setName( $member->name );
 
             // Addresses...
             foreach( $member->connection_list as $conn ) {
-                if( $conn->ixp_id != $ixp->ixp_id || $conn->state != 'active' ) {
+                if( $conn->ixp_id != $ixp->schemaId || $conn->state != 'active' ) {
                     continue;
                 }
 
@@ -149,6 +162,13 @@ class UpdateIXPs extends Command
                         $af = "ipv{$protocol}";
 
                         if( !isset( $vl->$af ) ) {
+                            // does the address already exist?
+                            foreach( $me->getAddresses() as $a ) {
+                                if( $a->getProtocol() == $protocol && $a->getLAN()->getIxpVlanId() == $vl->vlan_id ) {
+                                    EntityManager::remove($a);
+                                    EntityManager::flush();
+                                }
+                            }
                             continue;
                         }
 
