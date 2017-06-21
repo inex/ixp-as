@@ -88,11 +88,16 @@ This project uses the standard PHP stack and requires PHP >= 5.6, MySQL/MariaDB,
 
 7. Create the database schema:
 
-    ``
+    ````
     php artisan doctrine:schema:create
-    ``
+    ````
 
-8. Add IXPs to ``config/ixps.php``
+8. Add IXPs to ``config/ixps.php``:
+
+    ```
+    cp config/ixps.php.dist config/ixps.php
+    edit config/ixps.php
+    ```
 
 9. Add the following to cron:
 

@@ -5,3 +5,4 @@ Homestead.yaml
 Homestead.json
 .env
 /public/bower_components
+/configs/ixps.php
