@@ -62,6 +62,7 @@ This project uses the standard PHP stack and requires PHP >= 5.6, MySQL/MariaDB,
    ```
    cd /srv/ard
    composer install
+   bower install
    ```
 
 3. Create a database:

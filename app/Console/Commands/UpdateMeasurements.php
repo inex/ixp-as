@@ -65,11 +65,13 @@ class UpdateMeasurements extends Command
             return;
         }
 
+        $apiUrl = "https://atlas.ripe.net/api/v2/measurements/" . $m->$getAtlasIdFn();
+
         if( $this->isVerbose() ) {
-            $this->info( 'Checking result for measurement ' . $m->$getAtlasIdFn() );
+            $this->info( 'Checking result for measurement ' . $m->$getAtlasIdFn() . ' [' . $apiUrl . ']'  );
         }
 
-        $m->$setAtlasRequestDataFn( file_get_contents( "https://atlas.ripe.net/api/v2/measurements/" . $m->$getAtlasIdFn() ) );
+        $m->$setAtlasRequestDataFn( file_get_contents( $apiUrl ) );
         $measurement = json_decode( $m->$getAtlasRequestDataFn() );
 
         if( isset( $measurement->status->name ) ) {

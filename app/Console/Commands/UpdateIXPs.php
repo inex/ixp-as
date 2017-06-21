@@ -34,7 +34,6 @@ class UpdateIXPs extends Command
     /**
      * Create a new command instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -52,7 +51,7 @@ class UpdateIXPs extends Command
 
         if( !count(config('ixps')) ) {
             $this->error("No IXPs defined in configs/ixps.php");
-            exit -1;
+            return(-1);
         }
 
         $ixf_ids_processed = [];
@@ -63,50 +62,65 @@ class UpdateIXPs extends Command
 
             if( !in_array( $importer->getData()->version, [ '0.5', '0.6' ] ) ) {
                 $this->error( "Cannot import {$source['shortname']} as it has schema version {$importer->getData()->version} and we only support 0.5/0.6" );
+                continue;
             }
 
-            foreach( $importer->getIXPs() as $id => $ixp ) {
-                if( !$ixp->ixf_id ) {
-                    $this->error( "Cannot import {$source['shortname']} with IXP ID {$ixp->ixp_id} as it has no IXF ID defined" );
+            foreach( $importer->getIXPs() as $id => $schemaIXP ) {
+                if( !$schemaIXP->ixf_id ) {
+                    $this->error( "Cannot import {$source['shortname']} with IXP ID {$schemaIXP->ixp_id} as it has no IXF ID defined" );
                     continue;
                 }
 
-                $this->process( $importer, $ixp );
-            }
+                if( in_array( $schemaIXP->ixf_id, $ixf_ids_processed ) ) {
+                    $this->error( "{$source['shortname']} with IXP ID {$schemaIXP->ixp_id} already imports - defined twice in configs/ixps.php?" );
+                    continue;
+                }
 
+                $this->process( $importer, $schemaIXP );
+                $ixf_ids_processed[] = $schemaIXP->ixf_id;
+            }
         }
+
         if( $this->isVerbose() ) { $this->info("---- IXP UPDATE STOP  ----"); }
+        return(0);
     }
 
-    private function process( $importer, $ixp ) {
+    private function process( $importer, $schemaIXP ) {
         // does it exist in the database already?
-        if( !( $ixe = Registry::getRepository('Entities\IXP')->findOneBy( ['ixf_id' => $ixp->ixf_id ] ) ) ) {
+        if( !( $ixe = Registry::getRepository('Entities\IXP')->findOneBy( ['ixf_id' => $schemaIXP->ixf_id ] ) ) ) {
             if( $this->isVerbose() ) {
-                $this->info("{$ixp->shortname} does not exist in database -> adding");
+                $this->info("{$schemaIXP->shortname} does not exist in database -> adding");
             }
 
             $ixe = new IXP();
-            $ixe->setIxfId(     $ixp->ixf_id    );
+            $ixe->setIxfId(     $schemaIXP->ixf_id    );
             $ixe->setCreated(   new Carbon      );
             EntityManager::persist($ixe);
         }
 
         // update
-        $ixe->setName(      $ixp->name      );
-        $ixe->setShortname( $ixp->shortname );
-        $ixe->setCountry(   $ixp->country   );
+        $ixe->setName(      $schemaIXP->name      );
+        $ixe->setShortname( $schemaIXP->shortname );
+        $ixe->setCountry(   $schemaIXP->country   );
         EntityManager::flush();
 
-        $vlans = $this->updateLANs( $importer, $ixp, $ixe );
+        $vlans = $this->updateLANs( $schemaIXP, $ixe );
 
-        $members = $this->updateNetworks( $importer, $ixp, $ixe, $vlans );
+        $this->updateNetworks( $importer, $schemaIXP, $ixe, $vlans );
 
         $ixe->setLastUpdated( new Carbon );
         EntityManager::flush();
     }
 
-    private function updateNetworks( $importer, $ixp, $ixe, $vlans ) {
+    /**
+     * @param IXPImporter $importer
+     * @param object $schemaIXP
+     * @param IXP $ixe
+     * @param array $vlans
+     */
+    private function updateNetworks( $importer, $schemaIXP, $ixe, $vlans ) {
         foreach( $importer->getMembers() as $member ) {
+
             // does it exist in the database already?
             if( !( $me = Registry::getRepository('Entities\Network')->findOneBy( [ 'asn' => $member->asnum ] ) ) ) {
 
@@ -115,9 +129,7 @@ class UpdateIXPs extends Command
                 }
 
                 $me = new Network();
-
                 $me->setAsn( $member->asnum );
-
                 EntityManager::persist( $me );
             }
 
@@ -132,7 +144,7 @@ class UpdateIXPs extends Command
             // should it be?
             $shouldBeJoinedToIXP = false;
             foreach( $member->connection_list as $cl ) {
-                if( $cl->ixp_id == $ixp->schemaId ) {
+                if( $cl->ixp_id == $schemaIXP->schemaId ) {
                     $shouldBeJoinedToIXP = true;
                     break;
                 }
@@ -152,7 +164,7 @@ class UpdateIXPs extends Command
 
             // Addresses...
             foreach( $member->connection_list as $conn ) {
-                if( $conn->ixp_id != $ixp->schemaId || $conn->state != 'active' ) {
+                if( $conn->ixp_id != $schemaIXP->schemaId || $conn->state != 'active' ) {
                     continue;
                 }
 
@@ -202,9 +214,16 @@ class UpdateIXPs extends Command
         EntityManager::flush();
     }
 
-    private function updateLANs( $importer, $ixp, $ixe ) {
+    /**
+     * @param object $schemaIXP
+     * @param IXP $ixe
+     * @return array
+     */
+    private function updateLANs( $schemaIXP, $ixe ) {
         $vlans = [];
-        foreach( $ixp->vlan as $vlan ) {
+
+        foreach( $schemaIXP->vlan as $vlan ) {
+
             // does it exist in the database already?
             foreach( [ 4, 6 ] as $protocol ) {
                 $af = "ipv{$protocol}";
@@ -230,13 +249,13 @@ class UpdateIXPs extends Command
                 $vlane->setProtocol( $protocol );
                 $vlane->setSubnet(   $vlan->$af->prefix );
                 $vlane->setMasklen(  $vlan->$af->mask_length );
+
+                // indexed by IXP VLAN ID:
+                $vlans[$vlan->id] = $vlane;
+                EntityManager::flush();
             }
-
-            EntityManager::flush();
-
-            // indexed by IXP VLAN ID:
-            $vlans[$vlan->id] = $vlane;
         }
+
         return $vlans;
     }
 }

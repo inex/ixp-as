@@ -108,7 +108,7 @@ class UpdateProbes extends Command
                             }
                         }
 
-                        if( $old != $p->$fnGet() ) {
+                        if( $old != $p->$fnGet() && $p->getAtlasId() == $probe->id ) {
                             $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                         }
                     } // foreach found probe
