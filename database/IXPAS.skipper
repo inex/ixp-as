@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<skipper version="3.2.6.1309" mvc="Without MVC" orm="Doctrine2" name="IXP_AS" uuid="c2d767ef-5481-440c-ab2a-8315de8c3566">
+<skipper version="3.2.10.1370" mvc="Without MVC" orm="Doctrine2" name="IXP_AS" uuid="c2d767ef-5481-440c-ab2a-8315de8c3566">
   <module name="\MainBundle" local-name="MainBundle" namespace="\Entities" local-namespace="Entities" export-format="Doctrine2Xml" export-path="xml" uuid="a46b9548-6cd4-4b50-a043-7112001a35df">
     <entity name="\Entities\IXP" local-name="IXP" namespace="\Entities" uuid="0fcd5869-c98e-44a3-b8db-2536b2b72503">
       <field name="id" type="integer" required="true" unique="true" primary="true" auto-increment="true" uuid="f444952a-f769-4e9b-a444-fbce0e087efc"/>
+      <field name="organisation" type="string" size="30" required="true" uuid="be92daa4-5275-4fb5-87c8-72ea532014e6"/>
       <field name="name" type="string" size="255" uuid="fc44e317-c944-4e6d-8245-35376a5a7d76"/>
       <field name="shortname" type="string" size="255" uuid="91a3f8dc-6cec-4f26-b3fb-03db028ebab9"/>
       <field name="country" type="string" size="2" required="true" uuid="2b692f1d-3aae-435b-8bf2-bedf1a5865bd"/>

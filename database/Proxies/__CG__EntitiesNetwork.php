@@ -419,4 +419,15 @@ class Network extends \Entities\Network implements \Doctrine\ORM\Proxy\Proxy
         return parent::hasProtocolAtIXP($ixp, $protocol);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function hasProbeProtocol($protocol)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasProbeProtocol', [$protocol]);
+
+        return parent::hasProbeProtocol($protocol);
+    }
+
 }

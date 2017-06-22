@@ -6,3 +6,5 @@ Homestead.json
 .env
 /public/bower_components
 /config/ixps.php
+*~
+/.idea/

@@ -4,6 +4,7 @@
     <id name="id" type="integer">
       <generator strategy="AUTO"/>
     </id>
+    <field name="organisation" type="string" length="30" nullable="false"/>
     <field name="name" type="string" length="255" nullable="true"/>
     <field name="shortname" type="string" length="255" nullable="true"/>
     <field name="country" type="string" length="2" nullable="false"/>

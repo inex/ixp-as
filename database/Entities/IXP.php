@@ -321,4 +321,33 @@ public function getRequest()
 {
 return $this->request;
 }
+/**
+ * @var string
+ */
+private $organisation;
+
+
+/**
+ * Set organisation
+ *
+ * @param string $organisation
+ *
+ * @return IXP
+ */
+public function setOrganisation($organisation)
+{
+$this->organisation = $organisation;
+
+return $this;
+}
+
+/**
+ * Get organisation
+ *
+ * @return string
+ */
+public function getOrganisation()
+{
+return $this->organisation;
+}
 }

@@ -64,10 +64,10 @@ class IXP extends \Entities\IXP implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request', '' . "\0" . 'Entities\\IXP' . "\0" . 'organisation'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\IXP' . "\0" . 'name', '' . "\0" . 'Entities\\IXP' . "\0" . 'shortname', '' . "\0" . 'Entities\\IXP' . "\0" . 'country', '' . "\0" . 'Entities\\IXP' . "\0" . 'id', '' . "\0" . 'Entities\\IXP' . "\0" . 'LANs', '' . "\0" . 'Entities\\IXP' . "\0" . 'networks', '' . "\0" . 'Entities\\IXP' . "\0" . 'created', '' . "\0" . 'Entities\\IXP' . "\0" . 'lastupdated', '' . "\0" . 'Entities\\IXP' . "\0" . 'ixf_id', '' . "\0" . 'Entities\\IXP' . "\0" . 'request', '' . "\0" . 'Entities\\IXP' . "\0" . 'organisation'];
     }
 
     /**
@@ -417,6 +417,28 @@ class IXP extends \Entities\IXP implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRequest', []);
 
         return parent::getRequest();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrganisation($organisation)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', [$organisation]);
+
+        return parent::setOrganisation($organisation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrganisation()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', []);
+
+        return parent::getOrganisation();
     }
 
 }
