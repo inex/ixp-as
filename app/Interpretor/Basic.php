@@ -36,22 +36,26 @@ class Basic
         $srcAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getRequest()->getNetwork(), $m->getRequest()->getProtocol() );
         $dstAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getDestinationNetwork(),    $m->getRequest()->getProtocol() );
 
+        // traceroute from different routers can use the ingress or egress path so we merge these:
+        $allLanAddrs = array_merge( $dstAddrs[ 'lan' ], $srcAddrs[ 'lan' ] );
+        $allIxpAddrs = array_merge( $allLanAddrs, $dstAddrs[ 'ixp' ], $srcAddrs[ 'ixp' ] );
+
         $atlasOut = json_decode( $m->getAtlasOutData() );
         $atlasIn  = json_decode( $m->getAtlasInData() );
 
         $pathOut = $this->parsePath( $atlasOut );
         $pathIn  = $this->parsePath( $atlasIn );
 
-        $viaLanOut = $this->queryPassesThrough( $pathOut, $dstAddrs[ 'lan' ] );
-        $viaLanIn  = $this->queryPassesThrough( $pathIn,  $srcAddrs[ 'lan' ] );
+        $viaLanOut = $this->queryPassesThrough( $pathOut, $allLanAddrs );
+        $viaLanIn  = $this->queryPassesThrough( $pathIn,  $allLanAddrs );
 
         $r = new Result();
 
         if( $viaLanOut && $viaLanIn ) {
             $r->setRouting( 'IXP_LAN_SYM' );
         } else {
-            $viaIxpOut = $this->queryPassesThrough( $pathOut, $dstAddrs[ 'ixp' ] );
-            $viaIxpIn = $this->queryPassesThrough( $pathIn, $srcAddrs[ 'ixp' ] );
+            $viaIxpOut = $this->queryPassesThrough( $pathOut, $allIxpAddrs );
+            $viaIxpIn = $this->queryPassesThrough( $pathIn, $allIxpAddrs );
 
             if( ( $viaIxpOut && $viaIxpIn ) || ( $viaIxpOut && $viaLanIn ) || ( $viaLanOut && $viaIxpIn ) ) {
                 $r->setRouting( 'IXP_SYM' );
