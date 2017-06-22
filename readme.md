@@ -8,10 +8,13 @@ Live version: https://www.inex.ie/ard/
 This is a project of the [RIPE Atlas Interface Hackaton](https://atlas.ripe.net/hackathon/Interface/) just prior
 to [RIPE72](https://ripe72.ripe.net/) in Copenhagen, Denmark.
 
-## Authors:
+## Author(s):
+
+* Barry O'Donovan, [INEX](https://www.inex.ie/), Dublin, Ireland - principal author and maintainer.
+
+The team at the RIPE hackathon also included:
 
 * Jacob Drabczyk, [Facebook](https://www.facebook.com/), Dublin, Ireland
-* Barry O'Donovan, [INEX](https://www.inex.ie/), Dublin, Ireland
 * Drew Taylor, [Comcast](http://corporate.comcast.com/), Philadelphia, USA
 
 ## JSON Access
