@@ -99,9 +99,10 @@ class UpdateIXPs extends Command
         }
 
         // update
-        $ixe->setName(      $schemaIXP->name      );
-        $ixe->setShortname( $schemaIXP->shortname );
-        $ixe->setCountry(   $schemaIXP->country   );
+        $ixe->setOrganisation( $schemaIXP->organisation );
+        $ixe->setName(         $schemaIXP->name         );
+        $ixe->setShortname(    $schemaIXP->shortname    );
+        $ixe->setCountry(      $schemaIXP->country      );
         EntityManager::flush();
 
         $vlans = $this->updateLANs( $schemaIXP, $ixe );
