@@ -76,21 +76,21 @@ class UpdateMeasurements extends Command
             $this->info( 'Checking result for measurement ' . $m->$getAtlasIdFn() . ' [' . $apiUrl . ']'  );
         }
 
-//        $m->$setAtlasRequestDataFn( file_get_contents( $apiUrl ) );
-//        $measurement = json_decode( $m->$getAtlasRequestDataFn() );
-//
-//        if( isset( $measurement->status->name ) ) {
-//            $m->$setAtlasState($measurement->status->name);
-//
-//            if( $measurement->status->name == "Stopped" ) {
-//                $m->$setAtlasStoppedFn( new Carbon() );
-//                $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v2/measurements/" . $m->$getAtlasIdFn() . '/results' ) );
-//            } else if( in_array( $measurement->status->name, [ "Failed", "No suitable probes" ] ) ) {
-//                $m->$setAtlasStoppedFn( new Carbon() );
-//            }
-//        }
-//
-//        EntityManager::flush();
+        $m->$setAtlasRequestDataFn( file_get_contents( $apiUrl ) );
+        $measurement = json_decode( $m->$getAtlasRequestDataFn() );
+
+        if( isset( $measurement->status->name ) ) {
+            $m->$setAtlasState($measurement->status->name);
+
+            if( $measurement->status->name == "Stopped" ) {
+                $m->$setAtlasStoppedFn( new Carbon() );
+                $m->$setAtlasDataFn( file_get_contents( "https://atlas.ripe.net/api/v2/measurements/" . $m->$getAtlasIdFn() . '/results' ) );
+            } else if( in_array( $measurement->status->name, [ "Failed", "No suitable probes" ] ) ) {
+                $m->$setAtlasStoppedFn( new Carbon() );
+            }
+        }
+
+        EntityManager::flush();
 
         // if both in about out is complete with data, emit an event
         if( $m->getAtlasInStop() && $m->getAtlasOutStop() && $m->getAtlasInData() && $m->getAtlasOutData() ) {
