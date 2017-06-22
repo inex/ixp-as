@@ -12,13 +12,14 @@ class Basic
 
     /**
      * The measurement ORM entity
-     * @var Entities\Measurement
+     * @var Measurement
      */
     private $measurement;
 
 
     /**
-     * Constructor
+     * Basic constructor.
+     * @param Measurement $m
      */
     public function __construct( Measurement $m ) {
         $this->measurement = $m;
@@ -35,25 +36,32 @@ class Basic
         $srcAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getRequest()->getNetwork(), $m->getRequest()->getProtocol() );
         $dstAddrs = $this->getAddressesFromNetwork( $m->getRequest()->getIXP(), $m->getDestinationNetwork(),    $m->getRequest()->getProtocol() );
 
-        $atlasOut = json_decode($m->getAtlasOutData());
-        $atlasIn  = json_decode($m->getAtlasInData() );
+        $atlasOut = json_decode( $m->getAtlasOutData() );
+        $atlasIn  = json_decode( $m->getAtlasInData() );
 
         $pathOut = $this->parsePath( $atlasOut );
-        $pathIn  = $this->parsePath( $atlasIn  );
+        $pathIn  = $this->parsePath( $atlasIn );
 
-        $viaIxpOut = $this->queryPassesThrough( $pathOut, $dstAddrs );
-        $viaIxpIn  = $this->queryPassesThrough( $pathIn,  $srcAddrs );
+        $viaLanOut = $this->queryPassesThrough( $pathOut, $dstAddrs[ 'lan' ] );
+        $viaLanIn  = $this->queryPassesThrough( $pathIn,  $srcAddrs[ 'lan' ] );
 
         $r = new Result();
 
-        if( $viaIxpOut && $viaIxpIn ) {
-            $r->setRouting( 'IXP_SYM' );
-        } else if( !$viaIxpOut && $viaIxpIn ) {
-            $r->setRouting( 'IXP_ASYM_OUT' );
-        } else if( $viaIxpOut && !$viaIxpIn ) {
-            $r->setRouting( 'IXP_ASYM_IN' );
+        if( $viaLanOut && $viaLanIn ) {
+            $r->setRouting( 'IXP_LAN_SYM' );
         } else {
-            $r->setRouting( 'NON_IXP' );
+            $viaIxpOut = $this->queryPassesThrough( $pathOut, $dstAddrs[ 'ixp' ] );
+            $viaIxpIn = $this->queryPassesThrough( $pathIn, $srcAddrs[ 'ixp' ] );
+
+            if( ( $viaIxpOut && $viaIxpIn ) || ( $viaIxpOut && $viaLanIn ) || ( $viaLanOut && $viaIxpIn ) ) {
+                $r->setRouting( 'IXP_SYM' );
+            } else if( !$viaIxpOut && $viaIxpIn ) {
+                $r->setRouting( 'IXP_ASYM_OUT' );
+            } else if( $viaIxpOut && !$viaIxpIn ) {
+                $r->setRouting( 'IXP_ASYM_IN' );
+            } else {
+                $r->setRouting( 'NON_IXP' );
+            }
         }
 
         $r->setPathOut( serialize( $pathOut ) );
@@ -68,13 +76,16 @@ class Basic
      * NB: FIXME?: Assumes no ECMP... takes only one IP per hop.
      *
      * @param array $tracert Raw RIPE Atles JSON result as PHP
-     * @return path The path
+     * @return array The path
      */
     private function parsePath( array $tracert ) {
-        $path = [];
+        $path = [
+            'hops' => [],
+            'ixpx' => [],  // point of intersection with IXP
+        ];
 
         foreach( $tracert[0]->result as $hop ) {
-            // three itrations means each hop has three results:
+            // three iterations means each hop has three results:
             $results = [];
             foreach( $hop->result as $result ) {
 
@@ -90,9 +101,9 @@ class Basic
             }
 
             if( count($results) ) {
-                $path[] = $results;
+                $path['hops'][] = $results;
             } else {
-                $path[] = [ '*' ];
+                $path['hops'][] = [ '*' ];
             }
         }
 
@@ -106,36 +117,45 @@ class Basic
      * @param array $addrs List of addresses to find in $path
      * @return bool
      */
-    private function queryPassesThrough( array $path, array $addrs ) {
-        foreach( $path as $ipset ) {
+    private function queryPassesThrough( array &$path, array $addrs ) {
+
+        foreach( $path['hops'] as $ipset ) {
             foreach( $ipset as $ip ) {
                 if( in_array( $ip, $addrs ) ) {
-                    return true;
+                    $path['ixpx'][] = $ip;
                 }
             }
         }
 
-        return false;
+        return count( $path['ixpx'] );
     }
 
     /**
      * For a given network (ORM) and protocol, find their IXP assigned IP addresses
      *
-     * @param Entities\Network $n The IXP customer object
+     * @param IXP $ixp
+     * @param Network $n The IXP customer object
      * @param int $p The protocol
      * @return array Array of addresses
      */
     private function getAddressesFromNetwork( IXP $ixp, Network $n, $p ) {
-        $addrs = [];
+        $addrs = [
+            'lan' => [], // same LAN
+            'ixp' => [], // same IXP
+        ];
+
         foreach( $n->getAddresses() as $a ) {
             if( $a->getProtocol() != $p ) {
                 continue;
             }
 
             if( $a->getLAN()->getIXP()->getId() == $ixp->getId() ) {
-                $addrs[] = $a->getAddress();
+                $addrs['lan'][] = $a->getAddress();
+            } else if( $a->getLAN()->getIXP()->getOrganisation() == $ixp->getOrganisation() ) {
+                $addrs['ixp'][] = $a->getAddress();
             }
         }
+
         return $addrs;
     }
 

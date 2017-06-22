@@ -60,7 +60,7 @@ function showAsnInfo( id ) {
     $("span[id|='ip-address']").popover('hide');
     $("span[id|='ip-address']").popover('destroy');
 
-    ip = $('#'+id).html();
+    ip = $('#'+id).html().trim();
     var jqxhr = $.getJSON( whois + "/" + ip, function() {
           console.log( "Sending whois request for: " + ip );
         })
@@ -77,11 +77,13 @@ function showAsnInfo( id ) {
 
 function formatWhois(d) {
 
-    return "<strong>ASN:</strong>&nbsp" + d.asn + "<br>" +
-        "<strong>LIR:</strong>&nbsp" + d.lir + "<br>" +
+    return "<div style=\"color: #000\">" +
+         "<strong>ASN:</strong>&nbsp" + d.asn + "<br>" +
+         "<strong>LIR:</strong>&nbsp" + d.lir + "<br>" +
          "<strong>Prefix:</strong>&nbsp" + d.prefix + "<br>" +
          "<strong>RIR:</strong>&nbsp" + d.rir + "<br>" +
-         "<strong>Date:</strong>&nbsp" + d.date;
+         "<strong>Date:</strong>&nbsp" + d.date +
+         "</div>";
 
 
 }

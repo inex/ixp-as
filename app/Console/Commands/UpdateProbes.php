@@ -69,6 +69,8 @@ class UpdateProbes extends Command
                     }
                 } else {
                     // have probes -> update/insert
+                    $isNew = false;
+
                     foreach( $probes->results as $probe ) {
                         foreach( $network->getProbes() as $p ) {
                             if( $p->getAtlasId() == $probe->id ) {
@@ -87,6 +89,7 @@ class UpdateProbes extends Command
                             $p->setV6Enabled( false );
 
                             EntityManager::persist( $p );
+                            $isNew = true;
 
                             $this->info("Adding probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                         }
@@ -108,7 +111,7 @@ class UpdateProbes extends Command
                             }
                         }
 
-                        if( $old != $p->$fnGet() && $p->getAtlasId() == $probe->id ) {
+                        if( $old != $p->$fnGet() && !$isNew ) {
                             $this->comment("Updated probe {$p->getAtlasId()} for {$network->getName()} - IPv{$protocol}" );
                         }
                     } // foreach found probe

@@ -4,8 +4,13 @@
     <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="heading-{{$m->id}}">
         <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$m->id}}" aria-expanded="false" aria-controls="collapse-{{$m->id}}">
-            {{ $m->dnetwork->name}} (AS{{ $m->dnetwork->asn}}) [v]
+            {{ $m->dnetwork->name}} (AS{{ $m->dnetwork->asn}})
+
+            <a class="btn btn-default btn-xs collapsed pull-right" role="button" data-toggle="collapse"
+               style="margin-left: 20px;"
+               data-parent="#accordion" href="#collapse-{{$m->id}}" aria-expanded="false" aria-controls="collapse-{{$m->id}}">
+                    <span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+            </a>
 
             @if (isset($m->state) && in_array( $m->state, [ 'Failed', 'No suitable probes' ] ) )
 
@@ -17,8 +22,10 @@
 
             @else
 
-                @if ( $m->result->routing == 'IXP_SYM' )
+                @if ( $m->result->routing == 'IXP_LAN_SYM' )
                     <span class="label label-success pull-right">SYMMETRIC</span>
+                @elseif ( $m->result->routing == 'IXP_SYM' )
+                    <span class="label label-success pull-right">SAME IXP</span>
                 @elseif ( $m->result->routing == 'IXP_ASYM_OUT' )
                     <span class="label label-danger pull-right">ASYMMETRIC OUT</span>
                 @elseif ( $m->result->routing == 'IXP_ASYM_IN' )
@@ -30,10 +37,8 @@
                 @endif
 
 
-
             @endif
 
-          </a>
         </h4>
       </div>
       <div id="collapse-{{$m->id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{$m->id}}">
