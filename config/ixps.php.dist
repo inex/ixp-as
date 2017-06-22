@@ -3,6 +3,7 @@
 return [
 
     [
+        'organisation' => 'INEX',   // IX-F exports can include multiple 'IXPs' (e.g. >1 peering LAN). This field allows use to group them.
         'name'      => "INEX",
         'shortname' => 'INEX',
         'country'   => 'IE',
