@@ -63,7 +63,28 @@
 
 @endif
 
-<br><br><br><br>
+<br><br>
+
+<h3>Networks Without Probes at {{ $request->ixp->shortname }}</h3>
+
+@if( count( $networksWithoutProbes ) )
+
+    <p>
+        The following networks do not have RIPE Atlas probes at {{ $request->ixp->shortname }} for IPv{{ $request->protocol }}.
+    </p>
+
+    <ul>
+        @foreach( $networksWithoutProbes as $n )
+            <li> AS{{ $n->getAsn() }} - {{ $n->getName() }}</li>
+        @endforeach
+    </ul>
+
+@else
+
+    <p>Woohoo! All networks have RIPE Atlas probes!</p>
+
+@endif
+
 
 <div id="modal-json" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -80,6 +101,7 @@
     </div>
   </div>
 </div>
+
 
 @endsection
 

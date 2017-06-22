@@ -103,6 +103,8 @@ Route::get('/request/{ixp_id}/{network_id}/{protocol}/{json?}',function( $ixp_id
 
 
 Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
+
+    /** @var Entities\Request $r */
     if( !( $r = Registry::getRepository('Entities\Request')->findOneBy( ['nonce' => $nonce ] ) ) ) {
         App::abort(404);
     }
@@ -164,7 +166,22 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
         return response()->json( $jobj );
     }
 
-    return view('result', [ 'request' => $obj, 'json' => json_encode( $jobj ), 'nonce' => $nonce ] );
+    // get a list of networks with no Atlas probe
+    $networksWithoutProbes = [];
+    foreach( $r->getIXP()->getNetworks() as $n ) {
+        foreach( $n->getProbes() as $p ) {
+            if( $r->getProtocol() == 4 && $p->getV4Enabled() ) {
+                continue 2;
+            }
+            if( $r->getProtocol() == 6 && $p->getV6Enabled() ) {
+                continue 2;
+            }
+        }
+
+        $networksWithoutProbes[] = $n;
+    }
+
+    return view('result', [ 'request' => $obj, 'json' => json_encode( $jobj ), 'nonce' => $nonce, 'networksWithoutProbes' => $networksWithoutProbes ] );
 })
     ->where( ['nonce' => '[\d]+\-[\w]{8,8}-[\w]{8,8}-[\w]{8,8}'] );
 
