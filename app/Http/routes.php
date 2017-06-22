@@ -116,9 +116,10 @@ Route::get('/result/{nonce}/{json?}', function($nonce,$json=false) {
     $obj->started   = $r->getStarted();
     $obj->completed = $r->getCompleted();
 
-    $obj->ixp            = new stdClass;
-    $obj->ixp->name      = $r->getIXP()->getName();
-    $obj->ixp->shortname = $r->getIXP()->getShortname();
+    $obj->ixp               = new stdClass;
+    $obj->ixp->name         = $r->getIXP()->getName();
+    $obj->ixp->shortname    = $r->getIXP()->getShortname();
+    $obj->ixp->organisation = $r->getIXP()->getOrganisation();
 
     $obj->snetwork = new stdClass;
     $obj->snetwork->name = $r->getNetwork()->getName();
