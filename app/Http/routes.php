@@ -193,16 +193,18 @@ Route::get('/history', function () {
 
 Route::get('/whois/{ip}', function( $ip ) {
     if( strpos( $ip, '.' ) ) {
-        $host = reverseIPv4($ip);
+        $host    = reverseIPv4($ip);
+        $ptrHost = reverseIPv4($ip, '.in-addr.arpa.');
     } else {
         $host = ipv6ToNibble($ip);
+        $ptrHost = ipv6ToNibble($ip, '.ip6.arpa.');
     }
 
     $obj = new stdClass;
     $obj->error = true;
 
     try {
-        if( count( $lu = dns_get_record ( $host, DNS_TXT ) ) ) {
+        if( count( $lu = dns_get_record( $host, DNS_TXT ) ) ) {
             $data = explode( ' | ', $lu[0]['txt'] );
             $obj->asn    = isset( $data[0] ) ? $data[0] : '??';
             $obj->prefix = isset( $data[1] ) ? $data[1] : '??';
@@ -219,8 +221,15 @@ Route::get('/whois/{ip}', function( $ip ) {
             }
             $obj->error = false;
         }
+
+        // also do PTR
+        if( count( $lu = dns_get_record ( $ptrHost, DNS_PTR ) ) ) {
+            $obj->ptr = isset( $lu[0]['target'] ) ? $lu[0]['target'] : '(unknown)';
+        }
+
     } catch( \Exception $e ) {
         // dns query failed - ignore as $obj->error pre-emptivily set to false
+        $obj->errorMsg = $e->getMessage();
     }
     
     return response()->json( $obj );
@@ -230,14 +239,14 @@ Route::get('/whois/{ip}', function( $ip ) {
     ] );
 
 
-function ipv6ToNibble($ipv6) {
+function ipv6ToNibble($ipv6,$domain=null) {
     $addr = inet_pton($ipv6);
     $unpack = unpack('H*hex', $addr);
     $hex = $unpack['hex'];
-    return implode('.', array_reverse(str_split($hex))) . '.origin6.asn.cymru.com.';
+    return implode('.', array_reverse(str_split($hex))) . ( $domain !== null ? $domain : '.origin6.asn.cymru.com.' );
 }
 
-function reverseIPv4($ipv4) {
+function reverseIPv4($ipv4,$domain=null) {
     list( $a, $b, $c, $d ) = explode( '.', $ipv4 );
-    return "{$d}.{$c}.{$b}.{$a}.origin.asn.cymru.com.";
+    return "{$d}.{$c}.{$b}.{$a}" . ( $domain !== null ? $domain : ".origin.asn.cymru.com." );
 }

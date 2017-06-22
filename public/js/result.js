@@ -82,7 +82,8 @@ function formatWhois(d) {
          "<strong>LIR:</strong>&nbsp" + d.lir + "<br>" +
          "<strong>Prefix:</strong>&nbsp" + d.prefix + "<br>" +
          "<strong>RIR:</strong>&nbsp" + d.rir + "<br>" +
-         "<strong>Date:</strong>&nbsp" + d.date +
+         "<strong>Date:</strong>&nbsp" + d.date + "<br>" +
+         "<strong>PTR:</strong>&nbsp" + d.ptr +
          "</div>";
 
 
