@@ -104,7 +104,7 @@ class UpdateMeasurements extends Command
         // after an hour, consider outstanding measurements as dead
         $current = Carbon::now();
 
-        if( $m->getAtlasInStart() && !$m->getAtlasInStop() && Carbon::instance( $m->getAtlasInStart() )->diffInMinutes($current) >= 60 ) {
+        if( $m->getAtlasInStart() && !$m->getAtlasInStop() && Carbon::instance( $m->getAtlasInStart() )->diffInMinutes($current) >= 120 ) {
             if( $this->isVerbose() ) {
                 $this->info( 'Expiring in measurement ' . $m->$getAtlasIdFn() );
             }
@@ -114,7 +114,7 @@ class UpdateMeasurements extends Command
             EntityManager::flush();
         }
 
-        if( $m->getAtlasOutStart() && !$m->getAtlasOutStop() && Carbon::instance( $m->getAtlasOutStart() )->diffInMinutes($current) >= 60 ) {
+        if( $m->getAtlasOutStart() && !$m->getAtlasOutStop() && Carbon::instance( $m->getAtlasOutStart() )->diffInMinutes($current) >= 120 ) {
             if( $this->isVerbose() ) {
                 $this->info( 'Expiring out measurement ' . $m->$getAtlasIdFn() );
             }
